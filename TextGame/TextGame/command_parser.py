@@ -27,13 +27,13 @@ def filter_words(words, skip_words):
     ['go', 'passage', 'south']
 
     """
-    NewList =  []
+    new_list =  []
 
     for word in words:
         if not (word in skip_words):
-            NewList.append(word)
+            new_list.append(word)
 
-    return NewList
+    return new_list
 
         
 
@@ -87,23 +87,27 @@ def normalise_input(user_input):
     # Remove punctuation and convert to lower case
     no_punct = remove_punct(user_input).lower()
 
-    WordList = []
-    CurrentString = ""
-    WritingString = False
+    word_list = []
+    current_string = ""
+    writing_string = False
 
     for char in no_punct:
         if not(char.isspace()):
-            WritingString = True
-            CurrentString +=  char
+            writing_string = True
+            current_string +=  char
         else:
-            if WritingString == True:
-                if len(CurrentString) > 0:
-                    WordList.append(CurrentString)
-                    CurrentString = ""
-                    WritingString = False
+            if writing_string == True:
+                if len(current_string) > 0:
+                    word_list.append(current_string)
+                    current_string = ""
+                    writing_string = False
+    if len(current_string) > 0:
+                    word_list.append(current_string)
+                    current_string = ""
+                    writing_string = False
 
-    ImportantWords = filter_words(WordList,skip_words)
+    important_words = filter_words(word_list,skip_words)
 
-    return ImportantWords
+    return important_words
 
                 

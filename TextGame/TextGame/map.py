@@ -22,7 +22,7 @@ room_admins = {
     "description":
     """You are leaning agains the door of the systems managers'
 room. Inside you notice Matt "MJ" John and Simon Jones. They
-ignore you. To the north is the reception.""",
+ignore you. While tlking amoungst themselves, you hear them mention that Matt Strangis really likes items! To the north is the reception.""",
 
     "exits":  {"north": "Reception"},
 
