@@ -1,7 +1,7 @@
 from items import *
 from monsters import *
 from vendors import *
-
+#hoping that this forces an update
 #Stage 1 rooms
 dh_room_01_001 = {
                "name":"Your House",
@@ -9,11 +9,11 @@ dh_room_01_001 = {
                "items":[dh_sword_001,dh_leather_armour_001],
                "item_auto_list":[class_fighter],
                "item_auto_take_list":[],
-               "exits":{"Head Outside":"Room 2"},
+               "exits":{"head outside":"Room 2"},
                "exit_req_inv":{},
-               "exit_req_equ":{"Head Outside":["Demo Sword","Leather Armour"]},
+               "exit_req_equ":{"head outside":["Demo Sword","Leather Armour"]},
                "exit_req_stat":{},
-               "exit_action_desc":{"Head Outside":"to investgate the noise."},
+               "exit_action_desc":{"head outside":"to investgate the noise."},
                "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
@@ -27,11 +27,11 @@ dh_room_01_002 = {
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"DEFEND":"Room 3"},
+               "exits":{"defend":"Room 3"},
                "exit_req_inv":{},
                "exit_req_equ":{},
                "exit_req_stat":{},
-               "exit_action_desc":{"DEFEND":"to head to the village gate and stop the pillaging"},
+               "exit_action_desc":{"defend":"to head to the village gate and stop the pillaging"},
                "vendor":[dh_vendor_001],
                "monster_list":[dh_goblin_001,dh_goblin_002],
                "enter_encounter_desc":"Two goblins stand over your neighbour , their mouths dripping with blood. They scramble towards you.",
@@ -44,11 +44,11 @@ dh_room_01_003 = {
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"Into the woods":"Room 4"},
+               "exits":{"into the woods":"Room 4"},
                "exit_req_inv":{},
                "exit_req_equ":{},
                "exit_req_stat":{},
-               "exit_action_desc":{"Into the woods":"to go forth and look for where the orcs may have come from."},
+               "exit_action_desc":{"into the woods":"to go forth and look for where the orcs may have come from."},
                "vendor":[],
                "monster_list":[dh_orc_001],
                "enter_encounter_desc":"",
