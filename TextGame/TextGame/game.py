@@ -1,25 +1,27 @@
 from items import *
 from vendors import *
 from monsters import *
-from map import rooms
+from map import *
 
 
 
-stage1 = {"Room 1":room_01_001,
-          "Room 2":room_01_002,
-          "Room 3":room_01_003,
-          "Room 4":room_01_004
+dh_stage1 = {"Room 1":dh_room_01_001,
+          "Room 2":dh_room_01_002,
+          "Room 3":dh_room_01_003,
+          "Room 4":dh_room_01_004
 
           }
 
-stage2 = {"Room 1":room_02_001
+dh_stage2 = {"Room 1":dh_room_02_001
           }
 
 
 
-Game = {"name":"",
+dh_Game = {"name":"Demo Game",
         "description":"",
-        "stages":{"Stage 1":stage1,
-                  "Stage 2":stage2,
-                  }
+        "stages":{"Stage 1":dh_stage1,
+                  "Stage 2":dh_stage2,
+                  },
+        "start_stage":"Stage 1",
+        "start_room":"Room 1"
         }

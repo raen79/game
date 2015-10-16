@@ -199,7 +199,7 @@ def print_menu(exits, room_items, inv_items):
     
     item_count = 0
     for item in room_items:
-        iem_count += 1
+        item_count += 1
         print("TAKE "+str(item_count)+ " to take " + item["name"] + ".")
     item_count = 0
     for InvItem in inv_items:
@@ -224,9 +224,12 @@ def is_valid_exit(exits, chosen_exit):
     >>> is_valid_exit(rooms["Parking"]["exits"], "east")
     True
     """
-    return chosen_exit in exits
+    
+        
 
-def execute_go():
+    return chosen_exit.lower() in exits
+
+def execute_go(direction):
     """This function, given the direction (e.g. "south") updates the current room
     to reflect the movement of the player if the direction is a valid exit
     (and prints the name of the room into which the player is
@@ -234,7 +237,9 @@ def execute_go():
     """
     global previous_room
     global current_room
-    global rooms
+   
+    
+    direction = direction.lower()
     if is_valid_exit(current_room["exits"],direction):
         print(current_room["exits"][direction])
         previous_room = current_room
@@ -260,9 +265,7 @@ def execute_take(item_index):
             visible_items.append(item)
     if len(visible_items) > 0: 
         try:
-            index = int(item_index)
-        except:
-            print("Not a valid item number.")
+            index = (int(item_index) -1)
 
             item = visible_items[index]
             if (get_inventory_mass() + item["mass"]) <= player["max_carry"]:
@@ -270,6 +273,10 @@ def execute_take(item_index):
                 player["inventory"].append(item)
             else:
                 print("You are over-encumbered, you will need to drop an item")
+        except:
+            print("Not a valid item number.")
+
+            
     else:
         print("There is nothing to take here")
 
@@ -288,17 +295,35 @@ def execute_drop(item_index):
     
     if len(visible_items) > 0: 
         try:
-            index = int(item_index)
-        except:
-            print("Not a valid item number.")
-
+            index = (int(item_index) -1)
             item = visible_items[index]
             current_room["items"].append(item)
             player["inventory"].remove(item)
-            
+        except:
+            print("Not a valid item number.")  
     else:
         print("You have nothing to drop")
  
+def execute_equip(item_index):
+    global player
+    visible_items = []
+
+    for item in player["inventory"]:
+        #if item["hidden"] == False and (item["type"] == "weapon" or item["type"] == "weapon"):
+        if item["hidden"] == False:
+            visible_items.append(item)
+    
+    if len(visible_items) > 0: 
+        try:
+            index = (int(item_index) -1)
+            item = visible_items[index]
+            if not (equip_item(item)):
+                print("You can't equip that item")
+        except:
+            print("Not a valid item number.")  
+    else:
+        print("You have nothing to drop")
+
 def execute_inventory():
     print("render inventory")
 
@@ -320,7 +345,7 @@ def execute_command(input):
         return
     #input string is checked for being one of the exit commands or a single word command
     if is_valid_exit(current_room["exits"],input):
-        execute_go()
+        execute_go(input)
     elif input == "inventory":
                 execute_inventory()
 
@@ -341,6 +366,12 @@ def execute_command(input):
                 execute_drop(command[1])
             else:
                 print("Drop what?")
+
+        elif command[0] == "equip":
+            if len(command) > 1:
+                execute_equip(command[1])
+            else:
+                print("Equip what?")
 
         else:
             print("This makes no sense.")
@@ -368,6 +399,10 @@ def menu(exits, room_items, inv_items):
 
     return clean_user_input
 
+def move_stage(stage):
+    current_stage = dh_Game["stages"][stage]
+    current_room = current_stage["Room 1"]
+
 def move(exits, direction):
     """This function returns the room into which the player will move if, from a
     dictionary "exits" of avaiable exits, they choose to move towards the exit
@@ -382,7 +417,7 @@ def move(exits, direction):
     """
 
     # Next room to go to
-    return rooms[exits[direction]]
+    return current_stage[exits[direction]]
 
 def player_death():
     current_room = previous_room
@@ -391,12 +426,26 @@ def check_for_victory():
 
     return check_player_has_item("victory token")
         
+
+def initialise_game():
+    global current_stage
+    global current_room   
+    global previous_room
+    
+    current_stage = dh_Game["stages"][dh_Game["start_stage"]]
+    current_room = current_stage[dh_Game["start_room"]]
+    calculate_working_stats()
+
+
 # This is the entry point of our program
 def main():
 
+    initialise_game()
+    
     # Main game loop
     while True:
         # Display game status (room description, inventory etc.)
+        print("_________________________")
         print_room(current_room)
         print_inventory_items(player["inventory"])
 

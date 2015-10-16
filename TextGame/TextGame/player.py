@@ -1,5 +1,6 @@
 previous_room = {}
 current_room = {}
+current_stage = {}
 
 player = {
 "name":"",                                                                                      # Player's name displayed in combat 
@@ -92,12 +93,12 @@ def damage_player(dmg_amount):
           
 def equip_item(item):
     if item in player["inventory"]:
-        if item["type"] == "weapon":
+        if item["item_type"] == "weapon":
             player["weapon"] = item
             player["inventory"].remove(item)
             calculate_working_stats()
             return True
-        if item["type"] == "armour":
+        if item["item_type"] == "armour":
             player["armour"] = item
             player["inventory"].remove(item)
             calculate_working_stats()
@@ -116,11 +117,15 @@ def calculate_max_health():
 
 def calculate_combat_mod():
     combat_stat = 0
+    weapon_value = 0
 
     combat_stat_key = get_player_combat_stat()
 
     base_value = player["stat_dict"][combat_stat_key]
-    weapon_value = player["weapon"]["stat_dict"][combat_stat_key]
+
+    equiped_weapon = player["weapon"]
+    if len(equiped_weapon) > 0:
+        weapon_value = equiped_weapon["stat_dict"][combat_stat_key]
 
     combat_stat = base_value + weapon_value
     return combat_stat
@@ -142,6 +147,9 @@ def get_player_combat_stat():
         return "DEX"
     if check_player_has_item("mage path"):
         return "INT"
+
+    #no class chosen
+    return "STR"
 
 def check_player_has_item(item_name):
     for item in player["inventory"]:
