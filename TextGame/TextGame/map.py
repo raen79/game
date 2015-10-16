@@ -1,81 +1,93 @@
 from items import *
+from monsters import *
+from vendors import *
 
-room_reception = {
-    "name": "Reception",
+#Stage 1 rooms
+dh_room_01_001 = {
+               "name":"Your House",
+               "description":"Waking in your room, you wipe the sleep from your eyes and can hear a commotion from outside. Screams, snarls and crashes. Perhaps someone needs a snickers?",
+               "items":[dh_sword_001,dh_leather_armour_001],
+               "item_auto_list":[class_fighter],
+               "item_auto_take_list":[],
+               "exits":{"Head Outside":"Room 2"},
+               "exit_req_inv":{},
+               "exit_req_equ":{"Head Outside":["Demo Sword","Leather Armour"]},
+               "exit_req_stat":{},
+               "exit_action_desc":{"Head Outside":"to investgate the noise."},
+               "vendor":[],
+               "monster_list":[],
+               "enter_encounter_desc":"",
+               "leave_encounter_desc":"",            
+               "go_to_stage":""
+               }
 
-    "description":
-    """You are in a maze of twisty little passages, all alike.
-Next to you is the School of Computer Science and
-Informatics reception. The receptionist, Matt Strangis,
-seems to be playing an old school text-based adventure
-game on his computer. There are corridors leading to the
-south and east. The exit is to the west.""",
+dh_room_01_002 = {
+               "name":"The village square",
+               "description":"Your house leads on to the village square. What usually is a prety and peaceful green area has been stained red with the blood of many of the people you've grown up with. \n The goblins must be coming in from the village gate.",
+               "items":[],
+               "item_auto_list":[],
+               "item_auto_take_list":[],
+               "exits":{"DEFEND":"Room 3"},
+               "exit_req_inv":{},
+               "exit_req_equ":{},
+               "exit_req_stat":{},
+               "exit_action_desc":{"DEFEND":"to head to the village gate and stop the pillaging"},
+               "vendor":[dh_vendor_001],
+               "monster_list":[dh_goblin_001,dh_goblin_002],
+               "enter_encounter_desc":"Two goblins stand over your neighbour , their mouths dripping with blood. They scramble towards you.",
+               "leave_encounter_desc":"The goblins ley moitionless on the ground, much like the body they feasted on moments before they attacked",            
+               "go_to_stage":""
+               }
+dh_room_01_003 = {
+               "name":"The Village Gate",
+               "description":"The goblins have routed and you have fended off the attack. Many have died but many survied! This is true on both sides of the battle however and it clears there is likely to be more attacks like this to come. \n The village leader approaches you and thanks you.",
+               "items":[],
+               "item_auto_list":[],
+               "item_auto_take_list":[],
+               "exits":{"Into the woods":"Room 4"},
+               "exit_req_inv":{},
+               "exit_req_equ":{},
+               "exit_req_stat":{},
+               "exit_action_desc":{"Into the woods":"to go forth and look for where the orcs may have come from."},
+               "vendor":[],
+               "monster_list":[dh_orc_001],
+               "enter_encounter_desc":"",
+               "leave_encounter_desc":"",            
+               "go_to_stage":""
+               }
 
-    "exits": {"south": "Admins", "east": "Tutor", "west": "Parking"},
+dh_room_01_004 = {
+               "name":"To Stage 2",
+               "description":"This should not be shown",
+               "items":[],
+               "item_auto_list":[],
+               "item_auto_take_list":[],
+               "exits":{},
+               "exit_req_inv":{},
+               "exit_req_equ":{},
+               "exit_req_stat":{},
+               "exit_action_desc":{},
+               "vendor":[],
+               "monster_list":[],
+               "enter_encounter_desc":"",
+               "leave_encounter_desc":"",            
+               "go_to_stage":"Stage 2"
+               }
 
-    "items": [item_biscuits, item_handbook]
-}
-
-room_admins = {
-    "name": "MJ and Simon's room",
-
-    "description":
-    """You are leaning agains the door of the systems managers'
-room. Inside you notice Matt "MJ" John and Simon Jones. They
-ignore you. While tlking amoungst themselves, you hear them mention that Matt Strangis really likes items! To the north is the reception.""",
-
-    "exits":  {"north": "Reception"},
-
-    "items": []
-}
-
-room_tutor = {
-    "name": "your personal tutor's office",
-
-    "description":
-    """You are in your personal tutor's office. He intently
-stares at his huge monitor, ignoring you completely.
-On the desk you notice a cup of coffee and an empty
-pack of biscuits. The reception is to the west.""",
-
-    "exits": {"west": "Reception"},
-
-    "items": []
-}
-
-room_parking = {
-    "name": "the parking lot",
-
-    "description":
-    """You are standing in the Queen's Buildings parking lot.
-You can go south to the COMSC reception, or east to the
-general office.""",
-
-    "exits": {"east": "Office", "south": "Reception"},
-
-    "items": []
-}
-
-room_office = {
-    "name": "the general office",
-
-    "description":
-    """You are standing next to the cashier's till at
-30-36 Newport Road. The cashier looks at you with hope
-in their eyes. If you go west you can return to the
-Queen's Buildings.""",
-
-    "exits": {"west": "Parking"},
-
-    "items": [item_pen]
-}
-
-
-
-rooms = {
-    "Reception": room_reception,
-    "Admins": room_admins,
-    "Tutor": room_tutor,
-    "Parking": room_parking,
-    "Office": room_office
-}
+dh_room_02_001 = {
+               "name":"Woods Entrance",
+               "description":"This should not be shown",
+               "items":[],
+               "item_auto_list":[victory_token],
+               "item_auto_take_list":[],
+               "exits":{},
+               "exit_req_inv":{},
+               "exit_req_equ":{},
+               "exit_req_stat":{},
+               "exit_action_desc":{},
+               "vendor":[],
+               "monster_list":[],
+               "enter_encounter_desc":"",
+               "leave_encounter_desc":"",            
+               "go_to_stage":""
+               }

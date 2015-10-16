@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>907674b2-af07-4813-b377-ce5b17b453a8</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>game.py</StartupFile>
+    <StartupFile>game_engine.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -29,9 +29,18 @@
     <Compile Include="command_parser.py" />
     <Compile Include="Dictionary Templates.py" />
     <Compile Include="game.py" />
+    <Compile Include="game_engine.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="items.py" />
     <Compile Include="map.py" />
+    <Compile Include="monsters.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="player.py" />
+    <Compile Include="vendors.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
   <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
