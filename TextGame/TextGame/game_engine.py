@@ -1,10 +1,113 @@
 #!/usr/bin/python3
+from random import randint
 from game import *
 from player import *
 from command_parser import *
 
+#General Game Functions______
+
+def move_stage_check():
+    if len(current_room["go_to_stage"]) > 0:
+        current_stage = dh_Game["stages"][stage]
+        current_room = current_stage["Room 1"]
+
+def player_death():
+    current_room = previous_room
+
+def check_for_victory():
+
+    return check_player_has_item("victory token")
+        
+def initialise_game():
+    global current_stage
+    global current_room   
+    global previous_room
+    
+    current_stage = dh_Game["stages"][dh_Game["start_stage"]]
+    current_room = current_stage[dh_Game["start_room"]]
+    calculate_working_stats()
+
+def enter_room_check():
+    
+    move_stage_check()
+    
+    if len(current_room["monsters"]) > 0:
+        encounter_loop()
+    
+    #check for auto items
+        #give//take items
+    
+    #enter room loop
+
+   
+
+    pass
+
+#Combat Functions____________
+
+def calculate_encounter_exp(defeated_monsters):
+
+        total_exp_gain = 0
+        for monster in defeated_monsters:
+            total_exp_gain += calculate_exp_gain(monster["level"])
+        print("You gained "+total_exp_gain+" exp from the encounter!")
+        player_gain_exp(total_exp_gain)
+
+def generate_loot(defeated_monsters):
+    global current_room
+    loot_items = []
+    for monster in defeated_monsters:
+        for loot_table in monster["loot"]:
+            loot = random_loot(loot_table)
+            if type(loot) is int:
+                player["gold"] += loot
+            else:
+                loot_items.append(loot)
+
+    #currently loot is dropped on the floor 
+    current_room["items"].extend(loot_items)
 
 
+def random_loot(loot_table):
+    loot_int = randint(0,100)
+
+    for k,v in sorted(loot_table.items()):
+        if loot_int <= k:
+            if type(v) is str:
+                try:
+                    gold = int(v.replace("GOLD x ",""))
+                    return gold
+                except:
+                    return int(0)
+            else:
+                return v
+
+def encounter_loop():
+    global current_room
+    global player
+
+    defeated_monsters = []
+
+    print("_________________________")
+    print(current_room["enter_encounter_desc"])
+
+    while len(current_room["monsters"]) > 0 and player["current_health"] > 0:
+        pass
+
+
+    if player["current_health"] <= 0:
+        player_death()
+
+    else:
+
+        calculate_encounter_exp(defeated_monsters)
+
+        generate_loot(defeated_monsters)
+
+        print(current_room["enter_encounter_desc"])
+
+
+#Room Loop Function__________
 def list_of_items(items):
     """This function takes a list of items (see items.py for the definition) and
     returns a comma-separated list of item names (as a string). For example:
@@ -399,10 +502,6 @@ def menu(exits, room_items, inv_items):
 
     return clean_user_input
 
-def move_stage(stage):
-    current_stage = dh_Game["stages"][stage]
-    current_room = current_stage["Room 1"]
-
 def move(exits, direction):
     """This function returns the room into which the player will move if, from a
     dictionary "exits" of avaiable exits, they choose to move towards the exit
@@ -419,31 +518,17 @@ def move(exits, direction):
     # Next room to go to
     return current_stage[exits[direction]]
 
-def player_death():
-    current_room = previous_room
 
-def check_for_victory():
-
-    return check_player_has_item("victory token")
-        
-
-def initialise_game():
-    global current_stage
-    global current_room   
-    global previous_room
-    
-    current_stage = dh_Game["stages"][dh_Game["start_stage"]]
-    current_room = current_stage[dh_Game["start_room"]]
-    calculate_working_stats()
-
-
-# This is the entry point of our program
 def main():
 
     initialise_game()
     
+        
+
+
     # Main game loop
     while True:
+
         # Display game status (room description, inventory etc.)
         print("_________________________")
         print_room(current_room)
