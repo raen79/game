@@ -14,11 +14,15 @@ player = {
 "level":1,                                                                                      
 "exp":0,                                                                                        
 "inventory":[],                                                                                  # A list of item dictionaries representing the player's inventory  
-"max_carry":0
+"max_carry":0,
+"gold":0
 }
 
 
 
+def calculate_exp_gain(monster_lvl):
+    exp_mod =(0.4 ** player["level"]) + ((monster_lvl - player["level"]) * 0.005)
+    return calculate_next_level_req() * exp_mod
 
 #handles the gain in exp, and the level up process
 def player_gain_exp(exp):
