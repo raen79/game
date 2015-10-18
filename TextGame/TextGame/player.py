@@ -1,3 +1,4 @@
+#forcechange
 previous_room = {}
 current_room = {}
 current_stage = {}

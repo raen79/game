@@ -1,3 +1,4 @@
+#forcechange
 from items import *
 from vendors import *
 from monsters import *
