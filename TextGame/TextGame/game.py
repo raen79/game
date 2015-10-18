@@ -5,14 +5,14 @@ from map import *
 
 
 
-dh_stage1 = {"Room 1":dh_room_01_001,
+dh_stage1 = {"first room":dh_room_01_001,
           "Room 2":dh_room_01_002,
           "Room 3":dh_room_01_003,
           "Room 4":dh_room_01_004
 
           }
 
-dh_stage2 = {"Room 1":dh_room_02_001
+dh_stage2 = {"first room":dh_room_02_001
           }
 
 
@@ -23,5 +23,5 @@ dh_Game = {"name":"Demo Game",
                   "Stage 2":dh_stage2,
                   },
         "start_stage":"Stage 1",
-        "start_room":"Room 1"
+        "start_room":"first room"
         }

@@ -7,9 +7,10 @@ from command_parser import *
 #General Game Functions______
 
 def move_stage_check():
+    global current_room
     if len(current_room["go_to_stage"]) > 0:
         current_stage = dh_Game["stages"][stage]
-        current_room = current_stage["Room 1"]
+        current_room = current_stage["first room"]
 
 def player_death():
     current_room = previous_room
@@ -26,25 +27,39 @@ def initialise_game():
     current_stage = dh_Game["stages"][dh_Game["start_stage"]]
     current_room = current_stage[dh_Game["start_room"]]
     calculate_working_stats()
+    player["current_health"] = player["max_health"]
 
 def enter_room_check():
     
     move_stage_check()
     
-    if len(current_room["monsters"]) > 0:
+    if len(current_room["monster_list"]) > 0:
         encounter_loop()
     
     #check for auto items
         #give//take items
     
     #enter room loop
-
-   
-
     pass
+
+def calculate_monster_combat_mod(monster):
+    combat_stat = 0
+    weapon_value = 0
+
+    combat_stat_key = monster["combat_stat"]
+
+    base_value = monster["stat_dict"][combat_stat_key]
+
+    equiped_weapon = monster["weapon"]
+    if len(equiped_weapon) > 0:
+        weapon_value = equiped_weapon["stat_dict"][combat_stat_key]
+
+    combat_stat = base_value + weapon_value
+    return combat_stat
 
 #Combat Functions____________
 
+#end combat functions___
 def calculate_encounter_exp(defeated_monsters):
 
         total_exp_gain = 0
@@ -65,8 +80,7 @@ def generate_loot(defeated_monsters):
                 loot_items.append(loot)
 
     #currently loot is dropped on the floor 
-    current_room["items"].extend(loot_items)
-
+    return loot_items
 
 def random_loot(loot_table):
     loot_int = randint(0,100)
@@ -82,17 +96,218 @@ def random_loot(loot_table):
             else:
                 return v
 
+#main combat functions____
+def print_combat_summary(monster_list,defeated_monsters,current_monster):
+    print("_______________")
+    print("")
+    print("Monster Group:")
+
+    first_monster = True
+    for monster in monster_list:
+        monster["current_combat_mod"] = calculate_monster_combat_mod(monster)
+        if first_monster:
+            print("  "+monster["name"] +" - hp:"+str(monster["current_health"])+" <- currently fighting")
+            first_monster = False
+        else:
+            print("  "+monster["name"] +" - hp:"+str(monster["current_health"]))
+    print("Defeated Monsters:")
+    print("")
+
+    for monster in defeated_monsters:
+        print("  "+monster["name"])
+    
+    print("")
+    print("current foe:")
+    print(current_monster["name"])
+    print(current_monster["description"])
+    print("")
+    print("_______________")
+
+def get_player_action():
+    need_input = True
+
+    while need_input:
+        print("Make your move: (light attack[la], heavy attack[ha], parry[p], dodge[d])")
+        user_action = str(input(">"))
+        
+        if user_action.lower() == "light attack" or user_action.lower() == "la":
+            return "light attack"
+        elif user_action.lower() == "heavy attack" or user_action.lower() == "ha":
+            return "heavy attack"
+        elif user_action.lower() == "parry" or user_action.lower() == "p":
+            return "parry"
+        elif user_action.lower() == "dodge" or user_action.lower() == "d":
+            return "dodge"
+        else:
+            print("that is not a valid action")
+            print("")
+
+def get_monster_action(monster,skip):
+    
+    action = ""
+
+    need_action = True
+    while need_action:
+        action_int = randint(0,100)
+        for k,v in sorted(monster["combat_dict"].items()):
+            if action_int <= k:
+                action = v
+            else:
+                action = "inaction"
+        if skip !="player":
+            need_action = False
+        else:
+            if action != "dodge" and action != "parry":
+                need_action = False 
+
+    
+    return action
+
+def player_attack_monster(atk_type,monster):
+    global player
+    weapon_damage = 0
+    
+    if len(player["weapon"]) > 0:
+        weapon_damage = randint(player["weapon"]["min_dmg"],player["weapon"]["max_dmg"]+1) 
+
+    damage = player["current_combat_mod"] + weapon_damage
+
+    if len(monster["armour"]) > 0:
+        damage -= monster["armour"]["armour value"]
+
+    monster["current_health"] -= damage
+
+    print("You hit your foe for " +str(damage)+" damage!")
+    
+def monster_attack_player(atk_type,monster):
+    global player
+    weapon_damage = 0
+    
+    if len(monster["weapon"]) > 0:
+        weapon_damage = randint(monster["weapon"]["min_dmg"],monster["weapon"]["max_dmg"]+1) 
+
+    damage = monster["current_combat_mod"] + weapon_damage
+
+    if len(player["armour"]) > 0:
+        damage -= player["armour"]["armour value"]
+
+    player["current_health"] -= damage
+
+    print("Your foe hits you for " +str(damage)+" damage!")
+
+def player_parry_monster(monster):
+    global player
+
+    damage = player["stat_dict"]["DEX"]
+
+    monster["current_health"] -= damage
+
+    print("You parry your foe's attack and hit them for " +str(damage)+" damage!")
+
+def monster_parry_player(monster):
+    global player
+
+    damage = monster["stat_dict"]["DEX"]
+
+    player["current_health"] -= damage
+
+    print("Your foe parrys your attack and hits you for " +str(damage)+" damage!")
+
+def process_combat_actions(player_action,monster_action,monster,skip):
+    global player
+    print("")
+    player_animations = player["weapon"]["animations"][player_action]
+    monster_animations = monster["weapon"]["animations"][monster_action]
+
+    if skip == "player":
+        print("You are left prone from missing your last attack!")
+    else:
+        print(player_animations[randint(0,len(player_animations))])
+        
+
+    if skip == "monster":
+        print("Your for is left prone from missing their last attack!")
+    else:
+         print(monster_animations[randint(0,len(monster_animations))])
+
+
+    if player_action == "light attack":
+        if monster_action != "parry":
+            player_attack_monster("light",monster)
+            print("")
+        else:
+            monster_parry_player(monster)
+            return ""
+
+    if player_action == "heavy attack":
+        if monster_action != "dodge":
+            player_attack_monster("heavy",monster)
+            print("")
+        else:
+            print("Your attack is dodged!")
+            print("")
+            return "player"
+
+    if monster_action == "light attack":
+        if player_action != "parry":
+            monster_attack_player("light",monster)
+            print("")
+        else:
+            player_parry_monster(monster)
+            print("")
+            return ""
+
+    if monster_action == "heavy attack":
+        if player_action != "dodge":
+            monster_attack_player("heavy",monster)
+            print("")
+        else:
+            print("You dodge the incoming attack!")
+            print("")
+            return "monster"
+
+    return ""
+
 def encounter_loop():
     global current_room
     global player
 
+    skip_actor = ""
+    player_action = ""
+    monster_action = ""
+
+    
+
     defeated_monsters = []
 
+    
+
     print("_________________________")
+    print("")
     print(current_room["enter_encounter_desc"])
 
-    while len(current_room["monsters"]) > 0 and player["current_health"] > 0:
-        pass
+    current_monster = current_room["monster_list"][0]
+
+    while len(current_room["monster_list"]) > 0 and player["current_health"] > 0:
+        print_combat_summary(current_room["monster_list"],defeated_monsters,current_monster)
+        
+        if skip_actor != "player":
+            player_action = get_player_action()    
+        else:
+            player_action = "skipped"
+        
+        if skip_actor != "monster":
+            monster_action = get_monster_action(current_monster,skip_actor)
+        else:
+            monster_action = "skipped"
+
+        skip_actor = process_combat_actions(player_action,monster_action,current_monster,skip_actor)
+
+        if current_monster["current_health"] <= 0:
+            current_room["monster_list"].remove(current_monster)
+            defeated_monsters.append(current_monster)
+            current_monster = current_room["monster_list"][0]
+        print("_________________________")
 
 
     if player["current_health"] <= 0:
@@ -102,10 +317,9 @@ def encounter_loop():
 
         calculate_encounter_exp(defeated_monsters)
 
-        generate_loot(defeated_monsters)
+        current_room["items"].extend(generate_loot(defeated_monsters))
 
-        print(current_room["enter_encounter_desc"])
-
+        print(current_room["leave_encounter_desc"])
 
 #Room Loop Function__________
 def list_of_items(items):
@@ -429,9 +643,11 @@ def execute_equip(item_index):
 
 def execute_inventory():
     print("render inventory")
+    #needs constructing
 
 def execute_trade():
     print("render trade")
+    #needs constructing
               
 def execute_command(input):
     """This function takes a command (a list of words as returned by
@@ -528,6 +744,9 @@ def main():
 
     # Main game loop
     while True:
+        
+        enter_room_check()
+
 
         # Display game status (room description, inventory etc.)
         print("_________________________")

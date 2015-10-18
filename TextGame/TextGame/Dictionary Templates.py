@@ -15,7 +15,7 @@ sword_001 = {
 "armour value":0,                                                               # The damage reduction provided by the item when equiped as armour (Armour)
 "STR_req":0,                                                                    # The strength stat minimum requirement for equiping the item as armour (Armour)
 "mass":0,                                                                       # The weight of the item used when checking if the player can carry more items.
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]}, # When a player uses the item as a weapon and selects one of the actions. A random string will be selected from the list contained in the actions dictionary entry. e.g {"light attack":["You swing your sword quickly","you send out a fast paced jab with your blade"]  
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""],"inaction":[""]}, # When a player or monster("inaction" is for monsters only) uses the item as a weapon and selects one of the actions. A random string will be selected from the list contained in the actions dictionary entry. e.g {"light attack":["You swing your sword quickly","you send out a fast paced jab with your blade"]  
 "sell_value":0,                                                                 # How much you can sell the item for.
 "buy_value":0,                                                                  # How much it costs the player to buy the item. (approx. 3 x the sell value)
 "hidden":False,                                                                 # If true the item can be int he player's inventory without being printed. (used for items designed to track progress or choices)
@@ -34,7 +34,7 @@ class_fighter = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""],"inaction":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
@@ -52,7 +52,7 @@ class_rogue = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""],"inaction":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
@@ -70,7 +70,7 @@ class_mage = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""],"inaction":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
@@ -96,9 +96,9 @@ vendor_001 ={
 
 goblin_001 = {
 "name":"",                                                                                      # Name displayed in combat 
-"description":"",                                                                               # Description shown when using the "LOOK" command
+"description":"",                                                                               # Description shown while the player is choosing an action
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0},                                                 # the stats of the monster
-"combat_dict":{"light attack":24,"Heavy attack":49,"Parry":74,"Dodge":99},                      # the probability distribution for the actions of the monster. The engine will generate a number between 0 and 99 and the first number in this dictionary that the generated number is les or equal to is the action taken. remember 0-24 is 25 values i.e 25%
+"combat_dict":{24:"light attack",49:"heavy attack",74:"parry",99:"dodge"},                      # the probability distribution for the actions of the monster. The engine will generate a number between 0 and 99 and the first number in this dictionary that the generated number is les or equal to is the action taken. remember 0-24 is 25 values i.e 25%
 "combat_stat":"",                                                                               # The stat used for damage calculation. e.g. "STR"
 "armour":{},                                                                                    # (An armour dictionary variable e.g. "armour":leather_001) The dictionary for the equiped armour
 "weapon":{},                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
@@ -236,12 +236,12 @@ room_02_003 = {
 
 
 # STAGES _________________________________________
-stage1 = {"Room 1":room_01_001,
+stage1 = {"first room":room_01_001,     # the first room for each stage should have the key "first room"
           "Room 2":room_01_002,
           "Room 3":room_01_003
           }
 
-stage2 = {"Room 1":room_02_001,
+stage2 = {"first room":room_02_001,
           "Room 2":room_02_002,
           "Room 3":room_02_003
           }

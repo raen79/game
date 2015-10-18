@@ -8,8 +8,8 @@ player = {
 "stat_dict":{"STR":3,"DEX":3,"INT":3,"CON":3},                                                 # the stats of the player
 "armour":{},                                                                                    # (An armour dictionary variable e.g. "armour":leather_001) The dictionary for the equiped armour
 "weapon":{},                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
-"current_health":0,                                                                             # Current health of the player.
-"max_health":0,                                                                                 # This will be calculated and updated based on the player's constitution.
+"current_health":15,                                                                             # Current health of the player.
+"max_health":15,                                                                                 # This will be calculated and updated based on the player's constitution.
 "current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
 "level":1,                                                                                      
 "exp":0,                                                                                        
@@ -32,6 +32,7 @@ def player_gain_exp(exp):
             player["level"] += 1
             render_level_up_menu()
             calculate_working_stats()
+            player["current_health"] = player["max_health"]
 
 def calculate_next_level_req():
     return (2**(player["level"]-1))*100

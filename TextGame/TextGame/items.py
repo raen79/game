@@ -12,7 +12,7 @@ dh_sword_001 = {
 "armour value":0,                                                               # The damage reduction provided by the item when equiped as armour (Armour)
 "STR_req":0,                                                                    # The strength stat minimum requirement for equiping the item as armour (Armour)
 "mass":1,                                                                       # The weight of the item used when checking if the player can carry more items.
-"animations":{"light attack":["You swing your sword quickly"],"Heavy attack":["You draw back your sword and thrust it forward with all your might"],"Parry":["Bringing up your sword, you ready yourself an incoming attack"],"Dodge":["You ready yourself to evade an oncoming blow"]}, # When a player uses the item as a weapon and selects one of the actions. A random string will be selected from the list contained in the actions dictionary entry. e.g {"light attack":["You swing your sword quickly","you send out a fast paced jab with your blade"]  
+"animations":{"light attack":["You swing your sword quickly"],"heavy attack":["You draw back your sword and thrust it forward with all your might"],"parry":["Bringing up your sword, you ready yourself an incoming attack"],"dodge":["You ready yourself to evade an oncoming blow"],"inaction":[""]}, # When a player uses the item as a weapon and selects one of the actions. A random string will be selected from the list contained in the actions dictionary entry. e.g {"light attack":["You swing your sword quickly","you send out a fast paced jab with your blade"]  
 "sell_value":1,                                                                 # How much you can sell the item for.
 "buy_value":3,                                                                  # How much it costs the player to buy the item. (approx. 3 x the sell value)
 "hidden":False,                                                                 # If true the item can be int he player's inventory without being printed. (used for items designed to track progress or choices)
@@ -30,7 +30,7 @@ dh_sword_002 = {
 "armour value":0,                                                               # The damage reduction provided by the item when equiped as armour (Armour)
 "STR_req":0,                                                                    # The strength stat minimum requirement for equiping the item as armour (Armour)
 "mass":1,                                                                       # The weight of the item used when checking if the player can carry more items.
-"animations":{"light attack":["You swing your sword quickly"],"Heavy attack":["You draw back your sword and thrust it forward with all your might"],"Parry":["Bringing up your sword, you ready yourself an incoming attack"],"Dodge":["You ready yourself to evade an oncoming blow"]}, # When a player uses the item as a weapon and selects one of the actions. A random string will be selected from the list contained in the actions dictionary entry. e.g {"light attack":["You swing your sword quickly","you send out a fast paced jab with your blade"]  
+"animations":{"light attack":["You swing your sword quickly"],"heavy attack":["You draw back your sword and thrust it forward with all your might"],"parry":["Bringing up your sword, you ready yourself an incoming attack"],"dodge":["You ready yourself to evade an oncoming blow"],"inaction":[""]}, # When a player uses the item as a weapon and selects one of the actions. A random string will be selected from the list contained in the actions dictionary entry. e.g {"light attack":["You swing your sword quickly","you send out a fast paced jab with your blade"]  
 "sell_value":1,                                                                 # How much you can sell the item for.
 "buy_value":5,                                                                  # How much it costs the player to buy the item. (approx. 3 x the sell value)
 "hidden":False,                                                                 # If true the item can be int he player's inventory without being printed. (used for items designed to track progress or choices)
@@ -49,7 +49,7 @@ dh_goblin_dagger_001 = {
 "armour value":0,
 "STR_req":0,
 "mass":0.5,
-"animations":{"light attack":["The goblin scurrys towards you, dagger ready."],"Heavy attack":["The goblin charges towards you, screaming 'Die!'"],"Parry":["The goblin looks at you, ready to strike back"],"Dodge":["Light on it's feet, the goblin readys itself"]},
+"animations":{"light attack":["The goblin scurrys towards you, dagger ready."],"heavy attack":["The goblin charges towards you, screaming 'Die!'"],"parry":["The goblin looks at you, ready to strike back"],"dodge":["Light on it's feet, the goblin readys itself"],"inaction":[""]},
 "sell_value":1,
 "buy_value":3,
 "hidden":False,
@@ -67,7 +67,7 @@ dh_orc_club_001 = {
 "armour value":0,
 "STR_req":0,
 "mass":0.5,
-"animations":{"light attack":["The orc flails his club towards you."],"Heavy attack":["Raising the club above his head, the orc slams it downward","Charging at you, the orc pulls his club back and swing violently."],"Parry":["The orc brushes from side to side with his club"],"Dodge":["The orc fumbles around and takes an odd line towards you"]},
+"animations":{"light attack":["The orc flails his club towards you."],"heavy attack":["Raising the club above his head, the orc slams it downward","Charging at you, the orc pulls his club back and swing violently."],"parry":["The orc brushes from side to side with his club"],"dodge":["The orc fumbles around and takes an odd line towards you"],"inaction":[""]},
 "sell_value":1,
 "buy_value":3,
 "hidden":False,
@@ -160,7 +160,7 @@ class_fighter = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
@@ -178,7 +178,7 @@ class_rogue = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
@@ -196,7 +196,7 @@ class_mage = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
@@ -216,7 +216,7 @@ victory_token = {
 "armour value":0,
 "STR_req":0,
 "mass":0,
-"animations":{"light attack":[""],"Heavy attack":[""],"Parry":[""],"Dodge":[""]},
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""]},
 "sell_value":0,
 "buy_value":0,
 "hidden":True,
