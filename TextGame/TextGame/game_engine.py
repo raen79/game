@@ -10,11 +10,18 @@ from command_parser import *
 def move_stage_check():
     global current_room
     if len(current_room["go_to_stage"]) > 0:
-        current_stage = dh_Game["stages"][stage]
+        current_stage = dh_Game["stages"][current_room["go_to_stage"]]
         current_room = current_stage["first room"]
 
 def player_death():
+    global current_room
+    global previous_room
+    global player
+    print("you have died!!")
     current_room = previous_room
+
+    player["current_health"] = player["max_health"]
+    
 
 def check_for_victory():
 
@@ -66,25 +73,28 @@ def calculate_encounter_exp(defeated_monsters):
         total_exp_gain = 0
         for monster in defeated_monsters:
             total_exp_gain += calculate_exp_gain(monster["level"])
-        print("You gained "+total_exp_gain+" exp from the encounter!")
+        print("You gained "+ str(total_exp_gain) +" exp from the encounter!")
         player_gain_exp(total_exp_gain)
 
 def generate_loot(defeated_monsters):
     global current_room
+    global player
     loot_items = []
     for monster in defeated_monsters:
         for loot_table in monster["loot"]:
             loot = random_loot(loot_table)
             if type(loot) is int:
                 player["gold"] += loot
-            else:
+            elif type(loot) is str:
+                pass
+            else:    
                 loot_items.append(loot)
 
     #currently loot is dropped on the floor 
     return loot_items
 
 def random_loot(loot_table):
-    loot_int = randint(0,100)
+    loot_int = randint(0,99)
 
     for k,v in sorted(loot_table.items()):
         if loot_int <= k:
@@ -97,10 +107,18 @@ def random_loot(loot_table):
             else:
                 return v
 
+    return ""
+
 #main combat functions____
 def print_combat_summary(monster_list,defeated_monsters,current_monster):
+    
+    global player
+    
     print("_______________")
     print("")
+    print("Your Health: "+str(player["current_health"]))
+    print("")
+
     print("Monster Group:")
 
     first_monster = True
@@ -149,10 +167,11 @@ def get_monster_action(monster,skip):
 
     need_action = True
     while need_action:
-        action_int = randint(0,100)
+        action_int = randint(0,99)
         for k,v in sorted(monster["combat_dict"].items()):
             if action_int <= k:
                 action = v
+                break
             else:
                 action = "inaction"
         if skip !="player":
@@ -169,9 +188,12 @@ def player_attack_monster(atk_type,monster):
     weapon_damage = 0
     
     if len(player["weapon"]) > 0:
-        weapon_damage = randint(player["weapon"]["min_dmg"],player["weapon"]["max_dmg"]+1) 
+        weapon_damage = randint(player["weapon"]["min_dmg"],player["weapon"]["max_dmg"]) 
 
     damage = player["current_combat_mod"] + weapon_damage
+
+    if atk_type == "heavy":
+        damage *= 2
 
     if len(monster["armour"]) > 0:
         damage -= monster["armour"]["armour value"]
@@ -185,9 +207,13 @@ def monster_attack_player(atk_type,monster):
     weapon_damage = 0
     
     if len(monster["weapon"]) > 0:
-        weapon_damage = randint(monster["weapon"]["min_dmg"],monster["weapon"]["max_dmg"]+1) 
+        weapon_damage = randint(monster["weapon"]["min_dmg"],monster["weapon"]["max_dmg"]) 
 
     damage = monster["current_combat_mod"] + weapon_damage
+
+
+    if atk_type == "heavy":
+        damage *= 2
 
     if len(player["armour"]) > 0:
         damage -= player["armour"]["armour value"]
@@ -217,19 +243,22 @@ def monster_parry_player(monster):
 def process_combat_actions(player_action,monster_action,monster,skip):
     global player
     print("")
-    player_animations = player["weapon"]["animations"][player_action]
-    monster_animations = monster["weapon"]["animations"][monster_action]
+    if player_action != "skipped":
+        player_animations = player["weapon"]["animations"][player_action]
+    
+    if monster_action != "skipped":
+        monster_animations = monster["weapon"]["animations"][monster_action]
 
     if skip == "player":
         print("You are left prone from missing your last attack!")
     else:
-        print(player_animations[randint(0,len(player_animations))])
+        print(player_animations[randint(0,len(player_animations)-1)])
         
 
     if skip == "monster":
         print("Your for is left prone from missing their last attack!")
     else:
-         print(monster_animations[randint(0,len(monster_animations))])
+         print(monster_animations[randint(0,len(monster_animations)-1)])
 
 
     if player_action == "light attack":
@@ -307,7 +336,8 @@ def encounter_loop():
         if current_monster["current_health"] <= 0:
             current_room["monster_list"].remove(current_monster)
             defeated_monsters.append(current_monster)
-            current_monster = current_room["monster_list"][0]
+            if len(current_room["monster_list"]) > 0:
+                current_monster = current_room["monster_list"][0]
         print("_________________________")
 
 
@@ -522,8 +552,15 @@ def print_menu(exits, room_items, inv_items):
     item_count = 0
     for InvItem in inv_items:
         if not(InvItem["hidden"]):
-            item_count += 1     
-            print("DROP "+str(item_count)+ " to drop your " + InvItem["name"] + ".")    
+            item_count += 1
+            #temporary inventory command solution
+            if InvItem["item_type"] == "weapon" or InvItem["item_type"] == "armour":
+                print("[DROP] or [EQUIP] "+str(item_count)+ " to drop your " + InvItem["name"] + ".")
+            elif InvItem["item_type"] == "healing":
+                print("[DROP] or [USE] "+str(item_count)+ " to drop your " + InvItem["name"] + ".")
+            else:
+                print("[DROP] "+str(item_count)+ " to drop your " + InvItem["name"] + ".")
+                
     print("What do you want to do?")
 
 def is_valid_exit(exits, chosen_exit):

@@ -6,7 +6,7 @@ current_stage = {}
 player = {
 "name":"",                                                                                      # Player's name displayed in combat 
 "description":"",                                                                               # Description shown when using the "LOOK" command
-"stat_dict":{"STR":3,"DEX":3,"INT":3,"CON":3},                                                 # the stats of the player
+"stat_dict":{"STR":3,"DEX":3,"INT":3,"CON":5},                                                 # the stats of the player
 "armour":{},                                                                                    # (An armour dictionary variable e.g. "armour":leather_001) The dictionary for the equiped armour
 "weapon":{},                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
 "current_health":15,                                                                             # Current health of the player.
@@ -23,7 +23,7 @@ player = {
 
 def calculate_exp_gain(monster_lvl):
     exp_mod =(0.4 ** player["level"]) + ((monster_lvl - player["level"]) * 0.005)
-    return calculate_next_level_req() * exp_mod
+    return round(calculate_next_level_req() * exp_mod)
 
 #handles the gain in exp, and the level up process
 def player_gain_exp(exp):
