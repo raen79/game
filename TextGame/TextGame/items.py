@@ -45,8 +45,8 @@ dh_goblin_dagger_001 = {
 "name":"Goblins dagger",
 "description":"",
 "stat_dict":{"STR":0,"DEX":3,"INT":0,"CON":0,},
-"min_dmg":4,
-"max_dmg":5,
+"min_dmg":2,
+"max_dmg":4,
 "armour value":0,
 "STR_req":0,
 "mass":0.5,
@@ -90,6 +90,24 @@ dh_leather_armour_001 = {
 "animations":{},
 "sell_value":0,
 "buy_value":1,
+"hidden":False,
+"heal_value":0,
+"item_type":"armour",
+"use_description":""
+}
+
+dh_fine_leather_001 = {
+"name":"Fine Leather Armour",
+"description":"An improvement on most leather armour you've seen, the craftmanship and the ualtiy of the leather is very high.",
+"stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},
+"min_dmg":0,
+"max_dmg":0,
+"armour value":4,
+"STR_req":4,
+"mass":1.5,
+"animations":{},
+"sell_value":2,
+"buy_value":5,
 "hidden":False,
 "heal_value":0,
 "item_type":"armour",
@@ -208,8 +226,8 @@ class_mage = {
 
 
 
-victory_token = {
-"name":"victory token",
+end_game_token = {
+"name":"end game token",
 "description":"",
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},
 "min_dmg":0,

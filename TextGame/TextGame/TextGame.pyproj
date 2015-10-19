@@ -38,6 +38,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="player.py" />
+    <Compile Include="player_character.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="vendors.py">
       <SubType>Code</SubType>
     </Compile>
