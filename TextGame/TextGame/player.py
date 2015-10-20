@@ -196,13 +196,10 @@ def check_player_equipped_item(item_name):
     if len(player["weapon"]) > 0:
         if player["weapon"]["name"].lower() == item_name.lower():
             return True
-    else:
-        return False
+   
     if len(player["armour"]) > 0:
         if player["armour"]["name"].lower() == item_name.lower():
             return True
-    else:
-        return False
     return False
 
 def check_player_has_stat(stat_string,value):
