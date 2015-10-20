@@ -629,7 +629,6 @@ def exit_leads_to(room,direction):
     >>> exit_leads_to(rooms["Tutor"]["exits"], "west")
     'Reception'
     """
-    
     if direction in room["exit_action_desc"]:
         return room["exit_action_desc"][direction]
     else:
