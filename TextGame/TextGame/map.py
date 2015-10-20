@@ -15,7 +15,7 @@ td_room_01_001 = {
                "exit_req_equ":{},
                "exit_req_stat":{},
                "exit_action_desc":{""},
-               "vendor":[TB_wounded_vendor_001],
+               "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
                "leave_encounter_desc":"",            
