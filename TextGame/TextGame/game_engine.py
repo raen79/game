@@ -516,7 +516,7 @@ def print_inventory_list(items):
         print()
     if len(items_array) == 0:
         print('Your inventory is empty.')
-    print('EXIT to return to room view.')
+    print('EXIT or '' (no input) to return to room view.')
 
     return items_array
 
@@ -559,6 +559,8 @@ def print_summary():
     print('HEALTH: ' + str(player['current_health']))
     print('------')
     print()
+    print("hit enter to return to room view.")
+    input("")
 
 def print_room(room):
     """This function takes a room as an input and nicely displays its name
@@ -906,25 +908,31 @@ def execute_command(input):
     else:    
         #if not an exit command or single word command the input is split as before and checked for [verb,noun] structure.
         command = normalise_input(input)
-       
-        if command[0] == "take":
-            execute_take(command[1])
+        if len(command) > 1:
+            if command[0] == "take": 
+                execute_take(command[1])
 
-        elif command[0] == "drop":
-            execute_drop(command[1])
+            elif command[0] == "drop":
+                execute_drop(command[1])
 
-        elif command[0] == "equip":
-            execute_equip(command[1])
+            elif command[0] == "equip":
+                execute_equip(command[1])
 
-        elif command[0] == "look":
-            execute_look(command[1])
+            elif command[0] == "look":
+                execute_look(command[1])
 
-        elif command[0] == "use":
-            execute_use(command[1])
+            elif command[0] == "use":
+                execute_use(command[1])
 
+            else:
+                print("This makes no sense.")
         else:
-            print("This makes no sense.")
-
+            if len(command) == 1:
+                if command[0] == "take" or command[0] == "take" or command[0] == "use" or command[0] == "look" or command[0] == "drop":
+                    print("")
+                    print("You must follow an item command with a number e.g. 'drop 1'")
+                else:
+                    print("Not a recognised command")
 def process_inventory_input(items_array):
     user_input = input('> ')
     clean_user_input = remove_punct(user_input)
@@ -938,7 +946,7 @@ def process_inventory_input(items_array):
                 print(input_array[0].capitalize() + ' what?')
             elif len(input_array) == 2:
                 print('There was an error in your item number.')
-        elif input_array[0] == 'exit':
+        elif input_array[0] == 'exit' or input_array[0] == '':
             exit = True
         else:
             print('This make no sense.')

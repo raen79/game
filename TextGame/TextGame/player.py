@@ -187,12 +187,12 @@ def check_player_has_item(item_name):
 def check_player_equipped_item(item_name):
     global player
     if len(player["weapon"]) > 0:
-        if player["weapon"]["name"] == item_name:
+        if player["weapon"]["name"].lower() == item_name.lower():
             return True
     else:
         return False
-    if len(player["weapon"]) > 0:
-        if player["weapon"]["name"] == item_name:
+    if len(player["armour"]) > 0:
+        if player["armour"]["name"].lower() == item_name.lower():
             return True
     else:
         return False
