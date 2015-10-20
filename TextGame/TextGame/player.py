@@ -130,7 +130,7 @@ def calculate_working_stats():
 
 def calculate_max_health():
     health_per_con = 5
-    return health_per_con * player["stat_dict"]["CON"]
+    return health_per_con * player["stat_dict"]["CON"] + player["base_health"]
 
 def calculate_combat_mod():
     combat_stat = 0
@@ -186,10 +186,16 @@ def check_player_has_item(item_name):
 
 def check_player_equipped_item(item_name):
     global player
-    if player["weapon"]["name"] == item_name:
-        return True
-    if player["armour"]["name"] == item_name:
-        return True
+    if len(player["weapon"]) > 0:
+        if player["weapon"]["name"] == item_name:
+            return True
+    else:
+        return False
+    if len(player["weapon"]) > 0:
+        if player["weapon"]["name"] == item_name:
+            return True
+    else:
+        return False
     return False
 
 def check_player_has_stat(stat_string,value):

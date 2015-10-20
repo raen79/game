@@ -472,7 +472,9 @@ def print_inventory_list(items):
     equippable = []
     useable = []
     other = []
-
+    print("_________________________")
+    print("INVENTORY:")
+    print("")
     print('You have ' + str(player["gold"]) + ' gold.')
     print()
 
@@ -488,7 +490,10 @@ def print_inventory_list(items):
     i = 0
 
     if len(equippable) > 0:
-        print('You can: LOOK [ITEM #], EQUIP [ITEM #], or DROP [ITEM #] the following items:')
+        print("")
+        print('You can use the following commands: [EQUIP],[USE],[LOOK],[DROP] using the item numbers:')
+        print("e.g. 'drop 1' to drop item 1. (Note: '(equipable)' and '(usable)' show where their respective commands are appropriate")
+        print("")
         for item_index in equippable:
             if items[item_index]['item_type'] == 'armour':
                 print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (equippable - Req STR: ' + str(items[item_index]['STR_req']) + ')')
@@ -498,14 +503,12 @@ def print_inventory_list(items):
             i += 1
         print()
     if len(useable) > 0:
-        print('You can: LOOK [ITEM #], USE [ITEM #], or DROP [ITEM #] the following items:')
         for item_index in useable:
             print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (useable)')
             items_array.append(item_index)
             i += 1
         print()
     if len(other) > 0:
-        print('You can: LOOK [item #], or DROP [item #] the following items:')
         for item_index in other:
             print('[' +  str(i+1) + '] ' + items[item_index]['name'])
             items_array.append(item_index)
@@ -513,7 +516,7 @@ def print_inventory_list(items):
         print()
     if len(items_array) == 0:
         print('Your inventory is empty.')
-    print('EXIT to exit.')
+    print('EXIT to return to room view.')
 
     return items_array
 
@@ -649,7 +652,8 @@ def print_menu(exits, room_items, inv_items):
     # Iterate over available exits
     for direction in exits:
         # Print the exit name and where it leads to
-        print_exit(direction, exit_leads_to(current_room,direction))
+        if is_valid_exit(direction,current_room):
+            print_exit(direction, exit_leads_to(current_room,direction))
     
     item_count = 0
     for item in room_items:
@@ -706,7 +710,7 @@ def execute_go(direction):
    
     
     direction = direction.lower()
-    if is_valid_exit(direction,current_room["exits"]):
+    if is_valid_exit(direction,current_room):
         print(current_room["exits"][direction])
         previous_room = current_room
         current_room = move(current_room["exits"],direction)
@@ -889,7 +893,7 @@ def execute_command(input):
     if input == "":
         return
     #input string is checked for being one of the exit commands or a single word command
-    if is_valid_exit(current_room["exits"],input):
+    if is_valid_exit(input,current_room):
         execute_go(input)
     elif input == "inventory" or input == "i":
         execute_inventory(player["inventory"])
