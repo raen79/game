@@ -182,6 +182,11 @@ def check_player_has_item(item_name):
     for item in player["inventory"]:
         if item["name"].lower() == item_name.lower():
             return True
+    if len(player["weapon"]) > 0:
+        player["weapon"]["name"].lower() == item_name.lower()
+
+    if len(player["armour"]) > 0:
+        player["armour"]["name"] == item_name.lower()
     return False
 
 def check_player_equipped_item(item_name):
