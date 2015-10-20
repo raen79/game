@@ -515,9 +515,6 @@ def print_inventory_list(items):
         print('Your inventory is empty.')
     print('EXIT to exit.')
 
-    print(items)
-    print(items_array)
-
     return items_array
 
 def print_summary():
@@ -658,6 +655,11 @@ def print_menu(exits, room_items, inv_items):
     for item in room_items:
         item_count += 1
         print("TAKE "+str(item_count)+ " to take " + item["name"] + ".")
+
+    if len(current_room['vendor']) >= 1:
+        for vendor in current_room['vendor']:
+            print('TRADE to buy or sell items from ' + vendor['name'] + '.')
+
     print('SUMMARY (or S) to view the equipped items, health, and other statistics of your character.')
     print("INVENTORY (or I) to open your inventory.")
     print("What do you want to do?")
