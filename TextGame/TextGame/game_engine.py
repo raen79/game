@@ -438,6 +438,7 @@ def print_room_items(room):
     item_list = list_of_items(room["items"])
     
     if len(item_list) > 0:
+        print("")
         print("There is " + item_list + " here.")
         print()
 
@@ -516,7 +517,7 @@ def print_inventory_list(items):
         print()
     if len(items_array) == 0:
         print('Your inventory is empty.')
-    print('EXIT or '' (no input) to return to room view.')
+    print('EXIT or "" (no input) to return to room view.')
 
     return items_array
 
@@ -563,58 +564,16 @@ def print_summary():
     input("")
 
 def print_room(room):
-    """This function takes a room as an input and nicely displays its name
-    and description. The room argument is a dictionary with entries "name",
-    "description" etc. (see map.py for the definition). The name of the room
-    is printed in all capitals and framed by blank lines. Then follows the
-    description of the room and a blank line again. If there are any items
-    in the room, the list of items is printed next followed by a blank line
-    (use print_room_items() for this). For example:
-
-    >>> print_room(rooms["Office"])
-    <BLANKLINE>
-    THE GENERAL OFFICE
-    <BLANKLINE>
-    You are standing next to the cashier's till at
-    30-36 Newport Road. The cashier looks at you with hope
-    in their eyes. If you go west you can return to the
-    Queen's Buildings.
-    <BLANKLINE>
-    There is a pen here.
-    <BLANKLINE>
-
-    >>> print_room(rooms["Reception"])
-    <BLANKLINE>
-    RECEPTION
-    <BLANKLINE>
-    You are in a maze of twisty little passages, all alike.
-    Next to you is the School of Computer Science and
-    Informatics reception. The receptionist, Matt Strangis,
-    seems to be playing an old school text-based adventure
-    game on his computer. There are corridors leading to the
-    south and east. The exit is to the west.
-    <BLANKLINE>
-    There is a pack of biscuits, a student handbook here.
-    <BLANKLINE>
-
-    >>> print_room(rooms["Admins"])
-    <BLANKLINE>
-    MJ AND SIMON'S ROOM
-    <BLANKLINE>
-    You are leaning agains the door of the systems managers'
-    room. Inside you notice Matt "MJ" John and Simon Jones. They
-    ignore you. To the north is the reception.
-    <BLANKLINE>
-
-    Note: <BLANKLINE> here means that doctest should expect a blank line.
-    """
     # Display room name
     print()
-    print(room["name"].upper())
+    print(" - "+room["name"].upper()+" - ")
     print()
     # Display room description
+    print("__")
+    print("")
     print(room["description"])
-    print()
+
+    print("__")
     print_room_items(room)
 
 def exit_leads_to(room,direction):
@@ -654,6 +613,7 @@ def print_menu(exits, room_items, inv_items):
     """
     global current_room
     print("You can:")
+    print("")
     # Iterate over available exits
     for direction in exits:
         # Print the exit name and where it leads to
@@ -662,14 +622,18 @@ def print_menu(exits, room_items, inv_items):
     
     item_count = 0
     for item in room_items:
+        if item_count == 0:
+            print("")
         item_count += 1
-        print("TAKE "+str(item_count)+ " to take " + item["name"] + ".")
+        print("[TAKE] "+str(item_count)+ " to take " + item["name"] + ".")
 
     if len(current_room['vendor']) == 1:
-        print('TRADE to buy or sell items from ' + current_room['vendor'][0]['name'] + '.')
-
-    print('SUMMARY (or S) to view the equipped items, health, and other statistics of your character.')
-    print("INVENTORY (or I) to open your inventory.")
+        print("")
+        print('[TRADE] to buy or sell items from ' + current_room['vendor'][0]['name'] + '.')
+    print("")
+    print('[SUMMARY or S] to view your characters euippeed items and statistics.')
+    print("[INVENTORY or I] to open your inventory.")
+    print("")
     print("What do you want to do?")
 
 
@@ -776,6 +740,7 @@ def execute_drop(item_index):
         except:
             print("Not a valid item number.")  
     else:
+        print("")
         print("You have nothing to drop.")
  
 def execute_equip(item_index):
@@ -905,7 +870,7 @@ def execute_command(input):
         if len(current_room['vendor']) == 1:
             execute_trade(current_room['vendor'][0])
         else:
-            print('There is no one to trade with in this room.')
+            print('There is no one to trade with here.')
     elif input == "buy":
         if len(current_room['vendor']) == 1:
             execute_buy(current_room['vendor'][0], 0)
@@ -935,51 +900,51 @@ def execute_command(input):
             elif command[0] == "use":
                 execute_use(command[1])
 
-        elif command[0] == "buy":
-            if len(current_room['vendor']) == 1:
-                if int(command[2]) == 0:
-                    if len(current_room['vendor'][0]['stock_items']) > 0:
-                        execute_buy_item(command[1], 0)
-                    else:
-                        print('This vendor is not selling any items.')
-                if int(command[2]) == 1:
-                    if len(current_room['vendor'][0]['acquired_items']) > 0:
-                        execute_buy_item(command[1], 1)
-                    else:
-                        print('This vendor is not selling any items.')
-            else:
-                print('There is no one to trade with in this room.')
-
-        elif command[0] == "inspect":
-            if len(current_room['vendor']) == 1:
-                if int(command[2]) == 0:
-                    if len(current_room['vendor'][0]['stock_items']) > 0:
-                        execute_inspect_item(command[1], 0)
-                    else:
-                        print('This vendor is not selling any items.')
-                if int(command[2]) == 1:
-                    if len(current_room['vendor'][0]['acquired_items']) > 0:
-                        execute_inspect_item(command[1], 1)
-                    else:
-                        print('This vendor is not selling any items.')
-            else:
-                print('There is no one to trade with in this room.')
-
-        elif command[0] == "sell":
-            if len(current_room['vendor']) == 1:
-                items_index_array = []
-                i = 0
-                if len(player['inventory']) > 0:
-                    for item in player['inventory']:
-                        if item["hidden"] == False:
-                            items_index_array.append(i)
-                        i += 1
-                if len(items_index_array) >= int(command[1]) and int(command[1]) > 0:
-                    execute_sell_item(items_index_array, command[1])
+            elif command[0] == "buy":
+                if len(current_room['vendor']) == 1:
+                    if int(command[2]) == 0:
+                        if len(current_room['vendor'][0]['stock_items']) > 0:
+                            execute_buy_item(command[1], 0)
+                        else:
+                            print('This vendor is not selling any items.')
+                    if int(command[2]) == 1:
+                        if len(current_room['vendor'][0]['acquired_items']) > 0:
+                            execute_buy_item(command[1], 1)
+                        else:
+                            print('This vendor is not selling any items.')
                 else:
-                    print('You do not have any items to sell')
-            else:
-                print('There is no one to trade with in this room.')
+                    print('There is no one to trade with in this room.')
+
+            elif command[0] == "inspect":
+                if len(current_room['vendor']) == 1:
+                    if int(command[2]) == 0:
+                        if len(current_room['vendor'][0]['stock_items']) > 0:
+                            execute_inspect_item(command[1], 0)
+                        else:
+                            print('This vendor is not selling any items.')
+                    if int(command[2]) == 1:
+                        if len(current_room['vendor'][0]['acquired_items']) > 0:
+                            execute_inspect_item(command[1], 1)
+                        else:
+                            print('This vendor is not selling any items.')
+                else:
+                    print('There is no one to trade with in this room.')
+
+            elif command[0] == "sell":
+                if len(current_room['vendor']) == 1:
+                    items_index_array = []
+                    i = 0
+                    if len(player['inventory']) > 0:
+                        for item in player['inventory']:
+                            if item["hidden"] == False:
+                                items_index_array.append(i)
+                            i += 1
+                    if len(items_index_array) >= int(command[1]) and int(command[1]) > 0:
+                        execute_sell_item(items_index_array, command[1])
+                    else:
+                        print('You do not have any items to sell')
+                else:
+                    print('There is no one to trade with in this room.')
 
         else:
             if len(command) == 1:
@@ -1019,7 +984,9 @@ def inventory_menu(items):
 
 def trade_menu(vendor):
     global player
-
+    print("")
+    print("_________________________")
+    print("")
     print('------')
     print('You are talking to ' + vendor['name'])
     print(vendor['description'])
@@ -1054,19 +1021,23 @@ def execute_trade(vendor):
             print('This makes no sense.')
 
 def buy_menu(vendor, repurchase):
+    print("")
     print('You have ' + str(player['gold']) + ' gold.')
     print()
     if repurchase == 0:
-        print('You can BUY [ITEM #], INSPECT [ITEM #], REPURCHASE(to view items that were previously purchased by the vendor) or EXIT.')
+        print("")
+        print('You can [BUY] or [INSPECT] + Item Number to interact with an item. \n [REPURCHASE] to view items that were previously purchased by the vendor. \n [EXIT] to stop buying.')
         items = vendor['stock_items']
     else:
-        print('You can BUY [ITEM #], INSPECT [ITEM #], REPURCHASE(to view items that were previously purchased by the vendor) or EXIT.')
+        print("")
+        print("You can [BUY] or [INSPECT] + Item Number to interact with an item. \n [PURCHASE] to return the merchant's standard stock. \n [EXIT] to stop buying.")
         items = vendor['acquired_items']
     if len(items) > 0:
         print('Items for sale:')
         for index,item in enumerate(items):
-            print('[' + str(index+1) + '] ' + item['name'] + ' (' + str(item['buy_value']) + ' golds)')
+            print('[' + str(index+1) + '] ' + item['name'] + ' (' + str(item['buy_value']) + ' gold)')
     else:
+        print("")
         print('The vendor has no items for sale.')
 
 def execute_buy_item(input, repurchase):
@@ -1077,10 +1048,18 @@ def execute_buy_item(input, repurchase):
     input = int(input) - 1
     if len(items) > input:
         if player['gold'] >= items[input]['buy_value']:
+            print("")
+            print("__")
+            print("")
+            print("You hand over the gold and receive:")
+            print(items[input]["name"])
+            print("__")
             player['gold'] -= items[input]['buy_value']
             player['inventory'].append(items[input])
             items.remove(items[input])
+            
         else:
+            print("")
             print('You do not have enough gold to purchase this item.')
     else:
         print('This item does not exist.')
@@ -1152,8 +1131,8 @@ def execute_buy(vendor, repurchase):
                 else:
                     print('This makes no sense.')
             else:
-                if user_input[0] == 'repurchase':
-                    execute_buy(vendor, 1)
+                if user_input[0] == 'purchase':
+                    execute_buy(vendor, 0)
                 elif user_input[0] == 'exit':
                     exit = True
                 else:
@@ -1162,9 +1141,10 @@ def execute_buy(vendor, repurchase):
             print('This makes no sense.')
 
 def sell_menu(vendor, items_index_array):
+    print("")
     print('You have ' + str(player['gold']) + ' gold.')
     print()
-    print('You can SELL [ITEM #], LOOK [ITEM #], or EXIT.')
+    print('You can use [SELL] or [LOOK] + Item Number to interact with an ite.\n [EXIT] to stop selling.')
     indices = items_index_array
     if len(indices) > 0:
         print('Items you can sell:')
