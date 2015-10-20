@@ -3,6 +3,7 @@ from items import *
 from vendors import *
 from monsters import *
 from map import *
+from player_character import *
 
 
 

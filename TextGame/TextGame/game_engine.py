@@ -25,7 +25,7 @@ def player_death():
 
 def check_for_victory():
 
-    return check_player_has_item("victory token")
+    return check_player_has_item("end game token")
         
 def initialise_game():
     global current_stage
@@ -44,11 +44,45 @@ def enter_room_check():
     if len(current_room["monster_list"]) > 0:
         encounter_loop()
     
-    #check for auto items
-        #give//take items
     
+    room_auto_give(current_room)    
+
+    room_auto_take(current_room)
+
     #enter room loop
     pass
+
+def room_auto_take(room):
+    global player
+
+    
+    for room_item in room["item_auto_take_list"]:
+        #check if each inventory item has the same name as the auto remove item. if it does remove it.
+        for inv_item in player["inventory"]:
+            if inv_item["name"] == room_item["name"]:
+                player["inventory"].remove(inv_item)
+
+    #check if the equipped items have the same name as the auto remove item. if either do remove it.
+        if len(player["weapon"]) >0:
+            if player["weapon"]["name"] == room_item["name"]:
+                player["weapon"] = {}
+
+        if len(player["armour"]) >0:
+            if player["armour"]["name"] == room_item["name"]:
+                player["armour"] = {}
+
+def room_auto_give(room):
+    global player
+
+
+    for room_item in room["item_auto_list"]:
+        #if an item matching the room auto item is not found in the player's inventory , equipped weapon or armour then give the player the item.
+        if not(room_item in player["inventory"]) and player["armour"] != room_item and player["weapon"] != room_item:
+            player["inventory"].append(room_item)
+
+   
+                
+
 
 def calculate_monster_combat_mod(monster):
     combat_stat = 0
@@ -336,6 +370,7 @@ def encounter_loop():
         if current_monster["current_health"] <= 0:
             current_room["monster_list"].remove(current_monster)
             defeated_monsters.append(current_monster)
+            print(current_monster["name"] + " was defeated")
             if len(current_room["monster_list"]) > 0:
                 current_monster = current_room["monster_list"][0]
         print("_________________________")
@@ -374,11 +409,12 @@ def list_of_items(items):
     first_item = True
 
     for item in items:
-        if first_item:
-            first_item = False
-        else:
-            item_list += ", "
-        item_list += item["name"]
+        if not(item["hidden"]): 
+            if first_item:
+                first_item = False
+            else:
+                item_list += ", "
+            item_list += item["name"]
     
     return item_list
 
@@ -424,11 +460,12 @@ def print_inventory_items(items):
     first_item = True
 
     for item in items:
-        if first_item:
-            first_item = False
-        else:
-            item_list += ", "
-        item_list += item["name"]
+        if not(item["hidden"]): 
+            if first_item:
+                first_item = False
+            else:
+                item_list += ", "
+            item_list += item["name"]
     
     if len(item_list) > 0:
         print("You have " + item_list +".")
@@ -753,8 +790,11 @@ def execute_equip(item_index):
         try:
             index = int(item_index)
             item = visible_items[index]
-            if not (equip_item(item)):
-                print("You can't equip that item.")
+            equip_item_result = equip_item(item)
+            if equip_item_result == 0:
+                print("You can't equip that item")
+            if equip_item_result == 2:
+                print("You do not meet the requirements for that item")
         except:
             print("Not a valid item number.")  
     else:
@@ -969,10 +1009,20 @@ def main():
         
         enter_room_check()
 
+        
 
         # Display game status (room description, inventory etc.)
         print("_________________________")
         print_room(current_room)
+
+        """After printing the name and description of the room the engine checks for the with name "exit game token". 
+        If it finds it, the main game loop shoud be exited and the game should return to the game engine main menu.
+        Thus the final room the player enters (the one that has the auto give "exit game token") will display it's name and description ( perhaps a congratulations message) and the game will quit
+        
+        """
+        if check_for_victory():
+            break
+
         print_inventory_items(player["inventory"])
 
         # Show the menu with possible actions and ask the player
@@ -981,10 +1031,9 @@ def main():
         # Execute the player's command
         execute_command(command)
         
-        if check_for_victory():
-            break
-
-    print("Congratulations you returned all the items to reception!")
+       
+        #place holder message to be replaced with a return to the main menu
+    print("Game quit")
 
 # Are we being run as a script? If so, run main().
 # '__main__' is the name of the scope in which top-level code executes.

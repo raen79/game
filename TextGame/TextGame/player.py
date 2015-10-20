@@ -1,23 +1,5 @@
 #forcechange
-previous_room = {}
-current_room = {}
-current_stage = {}
-
-player = {
-"name":"",                                                                                      # Player's name displayed in combat 
-"description":"",                                                                               # Description shown when using the "LOOK" command
-"stat_dict":{"STR":3,"DEX":3,"INT":3,"CON":5},                                                 # the stats of the player
-"armour":{},                                                                                    # (An armour dictionary variable e.g. "armour":leather_001) The dictionary for the equiped armour
-"weapon":{},                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
-"current_health":15,                                                                             # Current health of the player.
-"max_health":15,                                                                                 # This will be calculated and updated based on the player's constitution.
-"current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
-"level":1,                                                                                      
-"exp":0,                                                                                        
-"inventory":[],                                                                                  # A list of item dictionaries representing the player's inventory  
-"max_carry":0,
-"gold":0
-}
+from player_character import *
 
 
 
@@ -45,14 +27,16 @@ def render_level_up_menu():
     print("_________________________")
     print("")
     print("Congratulations you have leveled up!")
-    print("You have " + str(points_per_level) +"stat points to spend.")
+    print("You have " + str(points_per_level) +" stat points to spend.")
     print("Current Stats:")
     for stat in player["stat_dict"]:
         print(stat + ": " + str(player["stat_dict"][stat]))
-    
+    print("")
     points_available = True
 
     while points_available:
+        stat_increase = {"STR":0,"DEX":0,"INT":0,"CON":0}
+        print("")
         for point in range(1,(points_per_level + 1)):
             need_input = True      
             while need_input:
@@ -63,19 +47,20 @@ def render_level_up_menu():
                 else:
                     print("Invalid Input")
 
+        print("")
         for stat in player["stat_dict"]:
             print(stat + ":     " + str(player["stat_dict"][stat]) + "   +"+str(stat_increase[stat])+"    new value:"+ str(player["stat_dict"][stat] + stat_increase[stat]))
         print("")
         need_input = True      
         while need_input:
-            input_confirm = str(input("Are you happy with these choices? (Yes or No)")).upper() 
-            if input_confirm == "YES":
+            input_confirm = str(input("Are you happy with these choices? (Yes[y] or No[n])")).upper() 
+            if input_confirm == "YES" or input_confirm == "Y":
                 for stat in player["stat_dict"]:
                     player["stat_dict"][stat] += stat_increase[stat]
                 
                 need_input = False
                 points_available = False
-            elif input_confirm == "NO":
+            elif input_confirm == "NO" or input_confirm == "N":
                 need_input = False
             else:
                 print("Invalid Input")
@@ -98,19 +83,45 @@ def damage_player(dmg_amount):
              player["current_health"] = 0
           
 def equip_item(item):
+    """
+    This function is used to equip the player with the item (dictionary) passed to it.
+    
+    The function will return the following results:
+    0 - The item is not equipable
+    1 - The item was equipped
+    2 - The player does not meet the requirements to equip the item. 
+    """
+    global player
+
     if item in player["inventory"]:
         if item["item_type"] == "weapon":
+            
+            #Place current weapon in to inventory
+            if len(player["weapon"]) >0:
+                player["inventory"].append(player["weapon"])
+            
+            #Take weapon from inventory and place in the player weapon slot
             player["weapon"] = item
             player["inventory"].remove(item)
+            
+            #recalculate stats
             calculate_working_stats()
-            return True
+
+            return 1
         if item["item_type"] == "armour":
-            player["armour"] = item
-            player["inventory"].remove(item)
-            calculate_working_stats()
-            return True
+            if player["stat_dict"]["STR"] >= item["STR_req"]:
+                #Place current armour in to inventory
+                if len(player["armour"]) >0:
+                    player["inventory"].append(player["armour"])
+
+                player["armour"] = item
+                player["inventory"].remove(item)
+                calculate_working_stats()
+                return 1
+            else:
+                return 2
     
-    return False
+    return 0
 
 def calculate_working_stats():
     player["max_health"] = calculate_max_health()
@@ -141,9 +152,18 @@ def calculate_max_carry():
     return kg_per_str * player["stat_dict"]["STR"]
 
 def get_inventory_mass():
+    global player
+    
     TotalMass = 0.0
     for item in player["inventory"]:
         TotalMass += item["mass"]
+
+    if len(player["weapon"]) > 0:
+        TotalMass += player["weapon"]["mass"] 
+
+    if len(player["armour"]) > 0:
+        TotalMass += player["armour"]["mass"]
+
     return TotalMass
 
 def get_player_combat_stat():
