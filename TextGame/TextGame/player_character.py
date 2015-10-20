@@ -15,5 +15,5 @@ player = {
 "exp":0,                                                                                        
 "inventory":[],                                                                                  # A list of item dictionaries representing the player's inventory  
 "max_carry":0,
-"gold":0
+"gold":10
 }
