@@ -858,7 +858,7 @@ def execute_use(item_index):
     visible_items = []
 
     for item in player["inventory"]:
-        #if item["hidden"] == False and (item["type"] == "weapon" or item["type"] == "weapon"):
+        ##if item["hidden"] == False and (item["type"] == "weapon" or item["type"] == "weapon"):
         if item["hidden"] == False:
             visible_items.append(item)
     
