@@ -10,6 +10,7 @@ player = {
 "weapon":{},                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
 "current_health":15,                                                                             # Current health of the player.
 "max_health":15,                                                                                 # This will be calculated and updated based on the player's constitution.
+"base_health":75,
 "current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
 "level":1,                                                                                      
 "exp":0,                                                                                        

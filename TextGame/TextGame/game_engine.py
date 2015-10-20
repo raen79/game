@@ -22,7 +22,6 @@ def player_death():
 
     player["current_health"] = player["max_health"]
     
-
 def check_for_victory():
 
     return check_player_has_item("end game token")
@@ -79,10 +78,6 @@ def room_auto_give(room):
         #if an item matching the room auto item is not found in the player's inventory , equipped weapon or armour then give the player the item.
         if not(room_item in player["inventory"]) and player["armour"] != room_item and player["weapon"] != room_item:
             player["inventory"].append(room_item)
-
-   
-                
-
 
 def calculate_monster_combat_mod(monster):
     combat_stat = 0
@@ -477,7 +472,9 @@ def print_inventory_list(items):
     equippable = []
     useable = []
     other = []
-
+    print("_________________________")
+    print("INVENTORY:")
+    print("")
     print('You have ' + str(player["gold"]) + ' gold.')
     print()
 
@@ -493,7 +490,10 @@ def print_inventory_list(items):
     i = 0
 
     if len(equippable) > 0:
-        print('You can: LOOK [ITEM #], EQUIP [ITEM #], or DROP [ITEM #] the following items:')
+        print("")
+        print('You can use the following commands: [EQUIP],[USE],[LOOK],[DROP] using the item numbers:')
+        print("e.g. 'drop 1' to drop item 1. (Note: '(equipable)' and '(usable)' show where their respective commands are appropriate")
+        print("")
         for item_index in equippable:
             if items[item_index]['item_type'] == 'armour':
                 print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (equippable - Req STR: ' + str(items[item_index]['STR_req']) + ')')
@@ -503,14 +503,12 @@ def print_inventory_list(items):
             i += 1
         print()
     if len(useable) > 0:
-        print('You can: LOOK [ITEM #], USE [ITEM #], or DROP [ITEM #] the following items:')
         for item_index in useable:
             print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (useable)')
             items_array.append(item_index)
             i += 1
         print()
     if len(other) > 0:
-        print('You can: LOOK [item #], or DROP [item #] the following items:')
         for item_index in other:
             print('[' +  str(i+1) + '] ' + items[item_index]['name'])
             items_array.append(item_index)
@@ -518,7 +516,7 @@ def print_inventory_list(items):
         print()
     if len(items_array) == 0:
         print('Your inventory is empty.')
-    print('EXIT to exit.')
+    print('EXIT or '' (no input) to return to room view.')
 
     return items_array
 
@@ -561,6 +559,8 @@ def print_summary():
     print('HEALTH: ' + str(player['current_health']))
     print('------')
     print()
+    print("hit enter to return to room view.")
+    input("")
 
 def print_room(room):
     """This function takes a room as an input and nicely displays its name
@@ -636,6 +636,7 @@ def print_exit(direction, leads_to):
    
     print(direction.upper() +" "+ leads_to)
 
+
 def print_menu(exits, room_items, inv_items):
     """This function displays the menu of available actions to the player. The
     argument exits is a dictionary of exits as exemplified in map.py. The
@@ -646,24 +647,6 @@ def print_menu(exits, room_items, inv_items):
     using the function exit_leads_to(). Then, it should print a list of commands
     related to items: for each item in the room print
 
-    "TAKE <ITEM ID> to take <item name>."
-
-    and for each item in the inventory print
-
-    "DROP <ITEM ID> to drop <item name>."
-
-    For example, the menu of actions available at the Reception may look like this:
-
-    You can:
-    GO EAST to your personal tutor's office.
-    GO WEST to the parking lot.
-    GO SOUTH to MJ and Simon's room.
-    TAKE BISCUITS to take a pack of biscuits.
-    TAKE HANDBOOK to take a student handbook.
-    DROP ID to drop your id card.
-    DROP LAPTOP to drop your laptop.
-    DROP MONEY to drop your money.
-    What do you want to do?
 
     """
     global current_room
@@ -671,7 +654,8 @@ def print_menu(exits, room_items, inv_items):
     # Iterate over available exits
     for direction in exits:
         # Print the exit name and where it leads to
-        print_exit(direction, exit_leads_to(current_room,direction))
+        if is_valid_exit(direction,current_room):
+            print_exit(direction, exit_leads_to(current_room,direction))
     
     item_count = 0
     for item in room_items:
@@ -685,26 +669,36 @@ def print_menu(exits, room_items, inv_items):
     print("INVENTORY (or I) to open your inventory.")
     print("What do you want to do?")
 
-def is_valid_exit(exits, chosen_exit):
+
+
+def is_valid_exit(chosen_exit,room):
     """This function checks, given a dictionary "exits" (see map.py) and
     a players's choice "chosen_exit" whether the player has chosen a valid exit.
     It returns True if the exit is valid, and False otherwise. Assume that
     the name of the exit has been normalised by the function normalise_input().
-    For example:
-
-    >>> is_valid_exit(rooms["Reception"]["exits"], "south")
-    True
-    >>> is_valid_exit(rooms["Reception"]["exits"], "up")
-    False
-    >>> is_valid_exit(rooms["Parking"]["exits"], "west")
-    False
-    >>> is_valid_exit(rooms["Parking"]["exits"], "east")
-    True
     """
-    
+    global player
+    if chosen_exit.lower() in room["exits"]:
+        if chosen_exit.lower() in room["exit_req_inv"]:
+            for itemname in room["exit_req_inv"][chosen_exit.lower()]:
+                if not(check_player_has_item(itemname)):
+                     return False
+        if chosen_exit.lower() in room["exit_req_equ"]:
+            for itemname in room["exit_req_equ"][chosen_exit.lower()]:
+                if not(check_player_equipped_item(itemname)):
+                    return False
         
+        if chosen_exit.lower() in room["exit_req_stat"]:
+            for statstring in room["exit_req_equ"][chosen_exit.lower()]:
+                statreq = statstring.split(',')
+                if not(check_player_has_stat(statreq[0],statreq[1])):
+                    return False
+        
+        return True
+    else:
+        return False
 
-    return chosen_exit.lower() in exits
+        
 
 def execute_go(direction):
     """This function, given the direction (e.g. "south") updates the current room
@@ -717,7 +711,7 @@ def execute_go(direction):
    
     
     direction = direction.lower()
-    if is_valid_exit(current_room["exits"],direction):
+    if is_valid_exit(direction,current_room):
         print(current_room["exits"][direction])
         previous_room = current_room
         current_room = move(current_room["exits"],direction)
@@ -868,7 +862,7 @@ def execute_use(item_index):
             index = int(item_index) - 1
             item = visible_items[index]
             if item['item_type'] == 'healing':
-                player["current_health"] += item['heal_value']
+                heal_player(item['heal_value'])
                 print(item['use_description'])
             else:
                 print('You cannot use this item.')
@@ -896,7 +890,7 @@ def execute_command(input):
     if input == "":
         return
     #input string is checked for being one of the exit commands or a single word command
-    if is_valid_exit(current_room["exits"],input):
+    if is_valid_exit(input,current_room):
         execute_go(input)
     elif input == "inventory" or input == "i":
         execute_inventory(player["inventory"])
@@ -922,21 +916,21 @@ def execute_command(input):
     else:    
         #if not an exit command or single word command the input is split as before and checked for [verb,noun] structure.
         command = normalise_input(input)
-       
-        if command[0] == "take":
-            execute_take(command[1])
+        if len(command) > 1:
+            if command[0] == "take": 
+                execute_take(command[1])
 
-        elif command[0] == "drop":
-            execute_drop(command[1])
+            elif command[0] == "drop":
+                execute_drop(command[1])
 
-        elif command[0] == "equip":
-            execute_equip(command[1])
+            elif command[0] == "equip":
+                execute_equip(command[1])
 
-        elif command[0] == "look":
-            execute_look(command[1])
+            elif command[0] == "look":
+                execute_look(command[1])
 
-        elif command[0] == "use":
-            execute_use(command[1])
+            elif command[0] == "use":
+                execute_use(command[1])
 
         elif command[0] == "buy":
             if len(current_room['vendor']) == 1:
@@ -985,8 +979,12 @@ def execute_command(input):
                 print('There is no one to trade with in this room.')
 
         else:
-            print("This makes no sense.")
-
+            if len(command) == 1:
+                if command[0] == "take" or command[0] == "take" or command[0] == "use" or command[0] == "look" or command[0] == "drop":
+                    print("")
+                    print("You must follow an item command with a number e.g. 'drop 1'")
+                else:
+                    print("Not a recognised command")
 def process_inventory_input(items_array):
     user_input = input('> ')
     clean_user_input = remove_punct(user_input)
@@ -1000,7 +998,7 @@ def process_inventory_input(items_array):
                 print(input_array[0].capitalize() + ' what?')
             elif len(input_array) == 2:
                 print('There was an error in your item number.')
-        elif input_array[0] == 'exit':
+        elif input_array[0] == 'exit' or input_array[0] == '':
             exit = True
         else:
             print('This make no sense.')
