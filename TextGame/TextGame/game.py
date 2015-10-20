@@ -75,8 +75,7 @@ stage2 = {"first room":rb_room_01_001,#Link to Tutorial
           }
 
 
-
-dh_Game = {"name":"Dungeons & Dictionaries.",
+game = {"name":"Dungeons & Dictionaries.",
         "description":"",
         "stages":{"Stage 1":stage1,
                   "Stage 2":stage2,

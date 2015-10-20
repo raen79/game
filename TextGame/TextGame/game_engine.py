@@ -1,16 +1,22 @@
 #forcechange
 #!/usr/bin/python3
 from random import randint
+from getpass import getpass
+
 from game import *
 from player import *
 from command_parser import *
 
 #General Game Functions______
 
+god_mode = False
+
+
 def move_stage_check():
     global current_room
+    global current_stage
     if len(current_room["go_to_stage"]) > 0:
-        current_stage = dh_Game["stages"][current_room["go_to_stage"]]
+        current_stage = game["stages"][current_room["go_to_stage"]]
         current_room = current_stage["first room"]
 
 def player_death():
@@ -31,8 +37,8 @@ def initialise_game():
     global current_room   
     global previous_room
     
-    current_stage = dh_Game["stages"][dh_Game["start_stage"]]
-    current_room = current_stage[dh_Game["start_room"]]
+    current_stage = game["stages"][game["start_stage"]]
+    current_room = current_stage[game["start_room"]]
     calculate_working_stats()
     player["current_health"] = player["max_health"]
 
@@ -665,6 +671,90 @@ def is_valid_exit(chosen_exit,room):
     else:
         return False
 
+def execute_godmode():
+    global god_mode
+    
+    if god_mode:
+        god_mode = False
+        print("")
+        print("God mode off!")
+    else:
+        print("")
+        print("Enter Password:")
+        god_code = getpass(">")
+
+        if god_code == "kirill":
+            print("")
+            print("God mode on")
+            print("You can now use:")
+            print("[GODMODE TELEPORT]")
+            god_mode = True
+        else:
+            print("")
+            print("You are unworthy!")
+    
+
+      
+
+
+
+def execute_teleport():
+      global previous_room
+      global current_room
+      global current_stage
+
+      temp_stage_store = current_stage
+
+      stage_key = ""
+      room_key = ""
+
+      print("")
+      print("Teleport:")
+      print("Enter the key of the stage you wish to go to.")
+      print("Hit enter (no input) for current stage")
+      stage_key = input(">")
+      print("")
+      print("Enter the key of the room you wish to go to.")
+      print("Hit enter (no input) for current room")
+      print("If you are changing stage, enter no input to go to 'first room'")
+      room_key = input(">")
+      
+      if stage_key != "":
+          if stage_key in game["stages"]:
+              current_stage = game["stages"][stage_key]
+              print("")
+              print("Stage found")
+
+          else:
+              print("")
+              print("no stage with that key found, you will stay in current stage")
+      else:
+          print("")
+          print("Staying in current stage")
+
+      if room_key in current_stage:
+        previous_room = current_room
+        current_room = current_stage[room_key]
+        print("")
+        print("Room found")
+                
+      else:
+        print("")
+        print("Room key not found.")
+        if stage_key != "":
+            if game["stages"][stage_key] != temp_stage_store:
+                print("")
+                print("Room will be set to 'first room' of "+ stage_key)
+                current_stage = game["stages"][stage_key]
+                previous_room = current_room
+                current_room = current_stage["first room"]
+            else:
+                print("")
+                print("No movement will be made")
+        else:
+                print("")
+                print("No movement will be made")
+        
         
 
 def execute_go(direction):
@@ -860,6 +950,19 @@ def execute_command(input):
     #input string is checked for being one of the exit commands or a single word command
     if is_valid_exit(input,current_room):
         execute_go(input)
+    
+    elif input == "godmode":
+        execute_godmode()
+    
+    elif input == "godmode teleport":
+        if god_mode:
+            execute_teleport()
+        else:
+            print("")
+            print("Not a recognised command")
+
+
+        
     elif input == "inventory" or input == "i":
         execute_inventory(player["inventory"])
 
@@ -952,6 +1055,7 @@ def execute_command(input):
                     print("")
                     print("You must follow an item command with a number e.g. 'drop 1'")
                 else:
+                    print("")
                     print("Not a recognised command")
 def process_inventory_input(items_array):
     user_input = input('> ')
