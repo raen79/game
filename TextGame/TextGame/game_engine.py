@@ -616,7 +616,7 @@ def print_menu(exits, room_items, inv_items):
     print("")
     # Iterate over available exits
     for direction in exits:
-        # Print the exit name and where it leads to
+        # print the exit name and where it leads to
         if is_valid_exit(direction,current_room):
             print_exit(direction, exit_leads_to(current_room,direction))
     
@@ -926,7 +926,7 @@ def execute_command(input):
                         if len(current_room['vendor'][0]['acquired_items']) > 0:
                             execute_inspect_item(command[1], 1)
                         else:
-                            print('This vendor is not selling any items.')
+                            print('This vendor has not previously purchased items.')
                 else:
                     print('There is no one to trade with in this room.')
 
@@ -939,8 +939,8 @@ def execute_command(input):
                             if item["hidden"] == False:
                                 items_index_array.append(i)
                             i += 1
-                    if len(items_index_array) >= int(command[1]) and int(command[1]) > 0:
-                        execute_sell_item(items_index_array, command[1])
+                        if len(items_index_array) >= int(command[1]) and int(command[1]) > -1:
+                            execute_sell_item(items_index_array, command[1])
                     else:
                         print('You do not have any items to sell')
                 else:
@@ -1000,6 +1000,7 @@ def trade_menu(vendor):
     print('EXIT to exit.')
 
 def trade_input():
+    print("")
     user_input = input('> ')
     clean_user_input = remove_punct(user_input)
     input_array = clean_user_input.split()
@@ -1022,6 +1023,8 @@ def execute_trade(vendor):
 
 def buy_menu(vendor, repurchase):
     print("")
+    print("_________________________")
+    print("")
     print('You have ' + str(player['gold']) + ' gold.')
     print()
     if repurchase == 0:
@@ -1033,6 +1036,7 @@ def buy_menu(vendor, repurchase):
         print("You can [BUY] or [INSPECT] + Item Number to interact with an item. \n [PURCHASE] to return the merchant's standard stock. \n [EXIT] to stop buying.")
         items = vendor['acquired_items']
     if len(items) > 0:
+        print("")
         print('Items for sale:')
         for index,item in enumerate(items):
             print('[' + str(index+1) + '] ' + item['name'] + ' (' + str(item['buy_value']) + ' gold)')
@@ -1142,6 +1146,8 @@ def execute_buy(vendor, repurchase):
 
 def sell_menu(vendor, items_index_array):
     print("")
+    print("_________________________")
+    print("")
     print('You have ' + str(player['gold']) + ' gold.')
     print()
     print('You can use [SELL] or [LOOK] + Item Number to interact with an ite.\n [EXIT] to stop selling.')
@@ -1155,13 +1161,21 @@ def sell_menu(vendor, items_index_array):
         print('You have no items to sell.')
 
 def execute_sell_item(items, input):
-    input = int(input) - 1
+    #input = int(input) - 1
+    input = int(input)
     item = player['inventory'][items[input]]
     if len(items) > input:
-        player['gold'] += item['sell_value']
-        player['inventory'].remove(item)
-        current_room['vendor'][0]['acquired_items'].append(item)
+        if item['sell_value'] > 0:
+            player['gold'] += item['sell_value']
+            player['inventory'].remove(item)
+            current_room['vendor'][0]['acquired_items'].append(item)
+        else:
+            print("__")
+            print("")
+            print('"I am not interested in buying this item."')
+            print("__")
     else:
+        print("")
         print('This item does not exist.')
 
 def execute_sell(vendor):
@@ -1178,7 +1192,7 @@ def execute_sell(vendor):
         sell_menu(vendor, items_index_array)
         user_input = trade_input()
         if len(user_input) == 2:
-            if user_input[1].isdigit() and int(user_input[1]) <= len(items_index_array):
+            if user_input[1].isdigit() and int(user_input[1]) < len(items_index_array):
                 if user_input[0] == 'sell' or user_input[0] == 'look':
                     execute_command(user_input[0] + ' ' + str(items_index_array[int(user_input[1])-1]))
                 else:
