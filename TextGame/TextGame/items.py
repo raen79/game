@@ -3,7 +3,7 @@
 
 
 
-# Weaopons
+# Weapons
 dh_sword_001 = {
 "name":"Demo Sword",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
 "description":"Property of group 02",                                                               # Description displayed when examining the item using the "LOOK" action 

@@ -434,6 +434,97 @@ def print_inventory_items(items):
         print("You have " + item_list +".")
         print()
 
+def print_inventory_list(items):
+    global player
+    items_array = []
+    equippable = []
+    useable = []
+    other = []
+
+    print('You have ' + str(player["gold"]) + ' gold.')
+    print()
+
+    for item in items:
+        if item["hidden"] == False:
+            if item["item_type"] == "weapon" or item["item_type"] == "armour":
+                equippable.append(items.index(item))
+            elif item["item_type"] == "healing":
+                useable.append(items.index(item))
+            else:
+                other.append(items.index(item))
+
+    i = 0
+
+    if len(equippable) > 0:
+        print('You can: LOOK [ITEM #], EQUIP [ITEM #], or DROP [ITEM #] the following items:')
+        for item_index in equippable:
+            if items[item_index]['item_type'] == 'armour':
+                print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (equippable - Req STR: ' + str(items[item_index]['STR_req']) + ')')
+            else:
+                print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (equippable)')
+            items_array.append(item_index)
+            i += 1
+        print()
+    if len(useable) > 0:
+        print('You can: LOOK [ITEM #], USE [ITEM #], or DROP [ITEM #] the following items:')
+        for item_index in useable:
+            print('[' +  str(i+1) + '] ' + items[item_index]['name'] + ' (useable)')
+            items_array.append(item_index)
+            i += 1
+        print()
+    if len(other) > 0:
+        print('You can: LOOK [item #], or DROP [item #] the following items:')
+        for item_index in other:
+            print('[' +  str(i+1) + '] ' + items[item_index]['name'])
+            items_array.append(item_index)
+            i += 1  
+        print()
+    if len(items_array) == 0:
+        print('Your inventory is empty.')
+    print('EXIT to exit.')
+
+    return items_array
+
+def print_summary():
+    global player
+
+    if 'name' in player['weapon']:
+        weapon_stats = player['weapon']['stat_dict']
+        ext_str = weapon_stats['STR']
+        ext_dex = weapon_stats['DEX']
+        ext_int = weapon_stats['INT']
+        ext_con = weapon_stats['CON']
+    else:
+        ext_str = 0
+        ext_dex = 0
+        ext_int = 0
+        ext_con = 0
+
+    print('------')
+    print('STATS')
+    print('------')
+    print('Strength: ' + str(player['stat_dict']['STR'] + ext_str))
+    print('Dexterity: ' + str(player['stat_dict']['DEX'] + ext_dex))
+    print('Intelligence: ' + str(player['stat_dict']['INT'] + ext_int))
+    print('Constitution: ' + str(player['stat_dict']['CON'] + ext_con))
+    print()
+    print('------')
+    print('EQUPPED ITEMS:')
+    print('------')
+    if 'name' in player['weapon']:
+        print('Weapon: ' + player['weapon']['name'])
+    else:
+        print('Weapon: NONE')
+    if 'name' in player['armour']:
+        print('Armour: ' + player['armour']['name'])
+    else:
+        print('Armour: NONE')
+    print()
+    print('------')
+    print('HEALTH: ' + str(player['current_health']))
+    print('------')
+    print()
+
 def print_room(room):
     """This function takes a room as an input and nicely displays its name
     and description. The room argument is a dictionary with entries "name",
@@ -549,18 +640,8 @@ def print_menu(exits, room_items, inv_items):
     for item in room_items:
         item_count += 1
         print("TAKE "+str(item_count)+ " to take " + item["name"] + ".")
-    item_count = 0
-    for InvItem in inv_items:
-        if not(InvItem["hidden"]):
-            item_count += 1
-            #temporary inventory command solution
-            if InvItem["item_type"] == "weapon" or InvItem["item_type"] == "armour":
-                print("[DROP] or [EQUIP] "+str(item_count)+ " to drop your " + InvItem["name"] + ".")
-            elif InvItem["item_type"] == "healing":
-                print("[DROP] or [USE] "+str(item_count)+ " to drop your " + InvItem["name"] + ".")
-            else:
-                print("[DROP] "+str(item_count)+ " to drop your " + InvItem["name"] + ".")
-                
+    print('SUMMARY (or S) to view the equipped items, health, and other statistics of your character.')
+    print("INVENTORY (or I) to open your inventory.")
     print("What do you want to do?")
 
 def is_valid_exit(exits, chosen_exit):
@@ -650,14 +731,14 @@ def execute_drop(item_index):
     
     if len(visible_items) > 0: 
         try:
-            index = (int(item_index) -1)
+            index = int(item_index)
             item = visible_items[index]
             current_room["items"].append(item)
             player["inventory"].remove(item)
         except:
             print("Not a valid item number.")  
     else:
-        print("You have nothing to drop")
+        print("You have nothing to drop.")
  
 def execute_equip(item_index):
     global player
@@ -670,18 +751,92 @@ def execute_equip(item_index):
     
     if len(visible_items) > 0: 
         try:
-            index = (int(item_index) -1)
+            index = int(item_index)
             item = visible_items[index]
             if not (equip_item(item)):
-                print("You can't equip that item")
+                print("You can't equip that item.")
         except:
             print("Not a valid item number.")  
     else:
-        print("You have nothing to drop")
+        print("You have nothing to equip.")
 
-def execute_inventory():
-    print("render inventory")
-    #needs constructing
+def execute_look(item_index):
+    global player
+    visible_items = []
+
+    for item in player["inventory"]:
+        #if item["hidden"] == False and (item["type"] == "weapon" or item["type"] == "weapon"):
+        if item["hidden"] == False:
+            visible_items.append(item)
+
+    if len(visible_items) > 0:
+        try:
+            index = int(item_index)
+            item = visible_items[index]
+            print('------')
+            if item['item_type'] == 'weapon':
+                print('Name: ' + str(item['name']))
+                print('Description: ' + str(item['description']))
+                print('Mass: ' + str(item['mass']))
+                print()
+                print('Strength: +' + str(item['stat_dict']['STR']))
+                print('Dexterity: +' + str(item['stat_dict']['DEX']))
+                print('Intelligence: +' + str(item['stat_dict']['INT']))
+                print('Constitution: ' + str(item['stat_dict']['CON']))
+                print()
+                print('Min-Max Damage: ' + str(item['min_dmg']) + '-' + str(item['max_dmg']))
+            elif item['item_type'] == 'armour':
+                print('Name: ' + str(item['name']))
+                print('Description: ' + str(item['description']))
+                print('Mass: ' + str(item['mass']))
+                print()
+                print('Damage Reduction: ' + str(item['armour value']))
+                print('Strength Required:' + str(item['STR_req']))
+            elif item['item_type'] == 'healing':
+                print('Name: ' + str(item['name']))
+                print('Description: ' + str(item['description']))
+                print('Mass: ' + str(item['mass']))
+                print()
+                print('Heal Value: ' + str(item['heal_value']))
+            else:
+                print('Name: ' + str(item['name']))
+                print('Description: ' + str(item['description']))
+                print('Mass: ' + str(item['mass'])) 
+            print('------')
+            print()               
+
+        except:
+            print("Not a valid item number.")
+    else:
+        print("You have nothing to look at.")
+
+def execute_use(item_index):
+    global player
+    visible_items = []
+
+    for item in player["inventory"]:
+        #if item["hidden"] == False and (item["type"] == "weapon" or item["type"] == "weapon"):
+        if item["hidden"] == False:
+            visible_items.append(item)
+    
+    if len(visible_items) > 0: 
+        try:
+            index = int(item_index)
+            item = visible_items[index]
+            if item['item_type'] == 'healing':
+                player["current_health"] += item['heal_value']
+                print(item['use_description'])
+            else:
+                print('You cannot use this item.')
+        except:
+            print("Not a valid item number.")  
+    else:
+        print("You have nothing to use.")
+
+def execute_inventory(items):
+    exit = False
+    while exit == False:
+        exit = inventory_menu(items)
 
 def execute_trade():
     print("render trade")
@@ -703,8 +858,11 @@ def execute_command(input):
     #input string is checked for being one of the exit commands or a single word command
     if is_valid_exit(current_room["exits"],input):
         execute_go(input)
-    elif input == "inventory":
-                execute_inventory()
+    elif input == "inventory" or input == "i":
+        execute_inventory(player["inventory"])
+
+    elif input == 'summary' or input == 's':
+        print_summary()
 
     elif input == "trade":
                 execute_trade()
@@ -713,25 +871,51 @@ def execute_command(input):
         command = normalise_input(input)
        
         if command[0] == "take":
-            if len(command) > 1:
-                execute_take(command[1])
-            else:
-                print("Take what?")
+            execute_take(command[1])
 
         elif command[0] == "drop":
-            if len(command) > 1:
-                execute_drop(command[1])
-            else:
-                print("Drop what?")
+            execute_drop(command[1])
 
         elif command[0] == "equip":
-            if len(command) > 1:
-                execute_equip(command[1])
-            else:
-                print("Equip what?")
+            execute_equip(command[1])
+
+        elif command[0] == "look":
+            execute_look(command[1])
+
+        elif command[0] == "use":
+            execute_use(command[1])
 
         else:
             print("This makes no sense.")
+
+def process_inventory_input(items_array):
+    user_input = input('> ')
+    clean_user_input = remove_punct(user_input)
+    input_array = clean_user_input.split()
+    exit = False
+    if clean_user_input != '':
+        if input_array[0] == 'look' or input_array[0] == 'equip' or input_array[0] == 'drop' or input_array[0] == 'use':
+            if len(input_array) == 2 and input_array[1].isdigit() and int(input_array[1]) <= len(items_array) and int(input_array[1]) > 0:
+                execute_command(input_array[0] + ' ' + str(items_array[int(input_array[1])-1]))
+            elif len(input_array) == 1:
+                print(input_array[0].capitalize() + ' what?')
+            elif len(input_array) == 2:
+                print('There was an error in your item number.')
+        elif input_array[0] == 'exit':
+            exit = True
+        else:
+            print('This make no sense.')
+    else:
+        exit = True
+
+    return exit
+
+def inventory_menu(items):
+    items_array = print_inventory_list(items)
+
+    exit = process_inventory_input(items_array)
+
+    return exit
 
 def menu(exits, room_items, inv_items):
     """This function, given a dictionary of possible exits from a room, and a list
