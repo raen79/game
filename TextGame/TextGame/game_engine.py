@@ -520,6 +520,9 @@ def print_inventory_list(items):
         print('Your inventory is empty.')
     print('EXIT to exit.')
 
+    print(items)
+    print(items_array)
+
     return items_array
 
 def print_summary():
@@ -768,7 +771,7 @@ def execute_drop(item_index):
     
     if len(visible_items) > 0: 
         try:
-            index = int(item_index)
+            index = int(item_index) -1
             item = visible_items[index]
             current_room["items"].append(item)
             player["inventory"].remove(item)
@@ -788,7 +791,7 @@ def execute_equip(item_index):
     
     if len(visible_items) > 0: 
         try:
-            index = int(item_index)
+            index = int(item_index)-1
             item = visible_items[index]
             equip_item_result = equip_item(item)
             if equip_item_result == 0:
@@ -811,7 +814,7 @@ def execute_look(item_index):
 
     if len(visible_items) > 0:
         try:
-            index = int(item_index)
+            index = int(item_index) - 1
             item = visible_items[index]
             print('------')
             if item['item_type'] == 'weapon':
@@ -861,7 +864,7 @@ def execute_use(item_index):
     
     if len(visible_items) > 0: 
         try:
-            index = int(item_index)
+            index = int(item_index) - 1
             item = visible_items[index]
             if item['item_type'] == 'healing':
                 player["current_health"] += item['heal_value']
