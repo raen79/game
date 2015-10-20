@@ -178,9 +178,23 @@ def get_player_combat_stat():
     return "STR"
 
 def check_player_has_item(item_name):
+    global player
     for item in player["inventory"]:
         if item["name"].lower() == item_name.lower():
             return True
     return False
 
-  
+def check_player_equipped_item(item_name):
+    global player
+    if player["weapon"]["name"] == item_name:
+        return True
+    if player["armour"]["name"] == item_name:
+        return True
+    return False
+
+def check_player_has_stat(stat_string,value):
+    global player
+    if player["stat_dict"][stat_sting] >= value:    
+        return True
+    else:
+        return False  

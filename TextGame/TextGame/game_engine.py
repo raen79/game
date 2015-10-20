@@ -22,7 +22,6 @@ def player_death():
 
     player["current_health"] = player["max_health"]
     
-
 def check_for_victory():
 
     return check_player_has_item("end game token")
@@ -79,10 +78,6 @@ def room_auto_give(room):
         #if an item matching the room auto item is not found in the player's inventory , equipped weapon or armour then give the player the item.
         if not(room_item in player["inventory"]) and player["armour"] != room_item and player["weapon"] != room_item:
             player["inventory"].append(room_item)
-
-   
-                
-
 
 def calculate_monster_combat_mod(monster):
     combat_stat = 0
@@ -639,6 +634,7 @@ def print_exit(direction, leads_to):
    
     print(direction.upper() +" "+ leads_to)
 
+
 def print_menu(exits, room_items, inv_items):
     """This function displays the menu of available actions to the player. The
     argument exits is a dictionary of exits as exemplified in map.py. The
@@ -649,24 +645,6 @@ def print_menu(exits, room_items, inv_items):
     using the function exit_leads_to(). Then, it should print a list of commands
     related to items: for each item in the room print
 
-    "TAKE <ITEM ID> to take <item name>."
-
-    and for each item in the inventory print
-
-    "DROP <ITEM ID> to drop <item name>."
-
-    For example, the menu of actions available at the Reception may look like this:
-
-    You can:
-    GO EAST to your personal tutor's office.
-    GO WEST to the parking lot.
-    GO SOUTH to MJ and Simon's room.
-    TAKE BISCUITS to take a pack of biscuits.
-    TAKE HANDBOOK to take a student handbook.
-    DROP ID to drop your id card.
-    DROP LAPTOP to drop your laptop.
-    DROP MONEY to drop your money.
-    What do you want to do?
 
     """
     global current_room
@@ -684,26 +662,36 @@ def print_menu(exits, room_items, inv_items):
     print("INVENTORY (or I) to open your inventory.")
     print("What do you want to do?")
 
-def is_valid_exit(exits, chosen_exit):
+
+
+def is_valid_exit(chosen_exit,room):
     """This function checks, given a dictionary "exits" (see map.py) and
     a players's choice "chosen_exit" whether the player has chosen a valid exit.
     It returns True if the exit is valid, and False otherwise. Assume that
     the name of the exit has been normalised by the function normalise_input().
-    For example:
-
-    >>> is_valid_exit(rooms["Reception"]["exits"], "south")
-    True
-    >>> is_valid_exit(rooms["Reception"]["exits"], "up")
-    False
-    >>> is_valid_exit(rooms["Parking"]["exits"], "west")
-    False
-    >>> is_valid_exit(rooms["Parking"]["exits"], "east")
-    True
     """
-    
+    global player
+    if chosen_exit.lower() in room["exits"]:
+        if chosen_exit.lower() in room["exit_req_inv"]:
+            for itemname in room["exit_req_inv"][chosen_exit.lower()]:
+                if not(check_player_has_item(itemname)):
+                     return False
+        if chosen_exit.lower() in room["exit_req_equ"]:
+            for itemname in room["exit_req_equ"][chosen_exit.lower()]:
+                if not(check_player_equipped_item(itemname)):
+                    return False
         
+        if chosen_exit.lower() in room["exit_req_stat"]:
+            for statstring in room["exit_req_equ"][chosen_exit.lower()]:
+                statreq = statstring.split(',')
+                if not(check_player_has_stat(statreq[0],statreq[1])):
+                    return False
+        
+        return True
+    else:
+        return False
 
-    return chosen_exit.lower() in exits
+        
 
 def execute_go(direction):
     """This function, given the direction (e.g. "south") updates the current room
@@ -716,7 +704,7 @@ def execute_go(direction):
    
     
     direction = direction.lower()
-    if is_valid_exit(current_room["exits"],direction):
+    if is_valid_exit(direction,current_room["exits"]):
         print(current_room["exits"][direction])
         previous_room = current_room
         current_room = move(current_room["exits"],direction)
@@ -867,7 +855,7 @@ def execute_use(item_index):
             index = int(item_index) - 1
             item = visible_items[index]
             if item['item_type'] == 'healing':
-                player["current_health"] += item['heal_value']
+                heal_player(item['heal_value'])
                 print(item['use_description'])
             else:
                 print('You cannot use this item.')
