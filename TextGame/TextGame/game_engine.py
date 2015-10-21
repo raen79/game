@@ -734,6 +734,9 @@ def print_inventory_list(items):
     print('You have ' + str(player["gold"]) + ' gold.')
     print()
 
+
+
+
     for item in items:
         if item["hidden"] == False:
             if item["item_type"] == "weapon" or item["item_type"] == "armour":
