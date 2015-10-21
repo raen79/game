@@ -140,7 +140,7 @@ td_room_01_010 = {
                "items":[TB_Church_key_001],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"west":"td_room 09"},
+               "exits":{"west":"td_room 08"},
                "exit_req_inv":{},
                "exit_req_equ":{},
                "exit_req_stat":{},
@@ -159,7 +159,7 @@ td_room_01_011 = {
                "items":[],
                "item_auto_list":[TB_Tutorial_sword_001],
                "item_auto_take_list":[],
-               "exits":{"unlock door":"td_room 12","south":"td_room 09"},
+               "exits":{"unlock door":"td_room 12","south":"td_room 08"},
                "exit_req_inv":{"unlock door":["The Church Key"]},
                "exit_req_equ":{"unlock door":["Battered Sword"]},
                "exit_req_stat":{},
@@ -335,7 +335,7 @@ td_room_01_020 = {
                "monster_list":[],
                "enter_encounter_desc":"",
                "leave_encounter_desc":"",            
-               "go_to_stage":"stage2"
+               "go_to_stage":"Stage 2"
                }
 
 #Stage2
