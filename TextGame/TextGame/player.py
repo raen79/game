@@ -3,22 +3,22 @@
 
 def calculate_exp_gain(player,monster_lvl):
     exp_mod =(0.4 ** player["level"]) + ((monster_lvl - player["level"]) * 0.005)
-    return round(calculate_next_level_req() * exp_mod)
+    return round(calculate_next_level_req(player,) * exp_mod)
 
 #handles the gain in exp, and the level up process
 def player_gain_exp(player,exp):
     if exp > 0:
         player["exp"] += exp
-        if player["exp"] >= calculate_next_level_req():
+        if player["exp"] >= calculate_next_level_req(player,):
             player["level"] += 1
-            render_level_up_menu()
+            render_level_up_menu(player)
             calculate_working_stats(player)
             player["current_health"] = player["max_health"]
 
-def calculate_next_level_req():
+def calculate_next_level_req(player,):
     return (2**(player["level"]-1))*100
 
-def render_level_up_menu():
+def render_level_up_menu(player):
     points_per_level = 3
     
     stat_increase = {"STR":0,"DEX":0,"INT":0,"CON":0}

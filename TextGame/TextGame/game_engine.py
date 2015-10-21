@@ -509,7 +509,7 @@ def monster_attack_player(atk_type,monster):
 def player_parry_monster(monster):
     global player
 
-    damage = player["stat_dict"]["DEX"]
+    damage = 2*player["stat_dict"]["DEX"]
 
     monster["current_health"] -= damage
 
@@ -518,7 +518,7 @@ def player_parry_monster(monster):
 def monster_parry_player(monster):
     global player
 
-    damage = monster["stat_dict"]["DEX"]
+    damage = 2*monster["stat_dict"]["DEX"]
 
     player["current_health"] -= damage
 

@@ -6,7 +6,7 @@ from .monsters import *
 
 td_room_01_001 = {
                "name":"Home", #
-               "description":"*BANG!* Your eyes fly open. What was that?! The room is bathed is a flickering red glow. Is that screaming? Quickly, grab your clothes and head downstairs!",
+               "description":"A loud and sudden noise wakes you up. You look around your home to find the source, but quickly realise it must have come from outside. You look around the room for your clothes so you can go and investigate.",
                "items":[TB_Tutorial_Armour_001],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -25,7 +25,7 @@ td_room_01_001 = {
 			
 td_room_01_002 = {
                "name":"Front Door", #
-               "description":"You reach your front door. With your clothes equipped, you can investigate the Village Green.",
+               "description":"You reach your front door but you can't leave without your clothes on. From your inventory, equip your clothes to leave.",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -33,7 +33,7 @@ td_room_01_002 = {
                "exit_req_inv":{},
                "exit_req_equ":{"east":["Clothes"]},
                "exit_req_stat":{},
-               "exit_action_desc":{"upstairs":"to head back upstairs.", "east":"to investigate the Village."},
+               "exit_action_desc":{""},
                "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
@@ -43,7 +43,7 @@ td_room_01_002 = {
 			
 td_room_01_003 = {
                "name":"Village Green", #
-               "description":"The Village is ablaze! You can barely see through all the smoke and ash. A man lays on the ground in a pool of blood. You notice some bandages on the floor. (Pick them up and help him!)",
+               "description":"You walk into the Village Green. You see lashing flames and smoke all around. A man lays on the ground in a pool of blood. You notice some bandages on the floor.",
                "items":[TB_bandages_001],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -61,7 +61,7 @@ td_room_01_003 = {
 
 td_room_01_004 = {
                "name":"Wounded Vendor", #
-               "description":"You kneel down to help him. He grabs you by the shirt and screams, 'RAIDERS!'. Glancing around, you can see small figures cavorting in the smoke. Clearly they are still around!",
+               "description":"You kneel down to see if you can help and to ask what happened? 'RAIDERS!', the man screams. You offer to help as it is all too clear with all the screaming and chaos that surrounds you that the raiders are still causing havoc in the village.",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -80,15 +80,15 @@ td_room_01_004 = {
 			
 td_room_01_005 = {
                "name":"Wounded Vendor", #
-               "description":"'GOBLINS! Goblins everywhere! One of the vile demonspawn got me. Here, I'll give you this dagger for the bandages you're carrying.' (Trade your Bandages for his Dagger.)",
+               "description":"The wounded man gasps and groans but tells you that a band of raiding goblins set upon the village suddenly. He sees that you might want to help and tells you that he is a weapons seller and that you can trade for one of his prize daggers to help defend the village ",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"confirm":"td_room 06"},
-               "exit_req_inv":{"confirm":["Dagger"]},
+               "exits":{"thanks":"td_room 06"},
+               "exit_req_inv":{"thanks":["Dagger"]},
                "exit_req_equ":{},
                "exit_req_stat":{},
-               "exit_action_desc":{"confirm":"to confirm the trade."},
+               "exit_action_desc":{"thanks":"to thank the merchant and be on your way."},
                "vendor":[TB_wounded_vendor_001],
                "monster_list":[],
                "enter_encounter_desc":"",
@@ -98,7 +98,7 @@ td_room_01_005 = {
 			
 td_room_01_006 = {
                "name":"Wounded Vendor", #
-               "description":"*THWACK* Blood sprays across your face. An arrow potrudes from the Vendors chest. You see a goblin archer cackling gleefully from the tavern roof. A wounded soldier is trying to get to him, equip your dagger so you can go help.",
+               "description":"You take the dagger from the seller just as the sound of a shot arrow rings out. A smattering of blood is strewn across your face as you look down to see an arrow tip pertruding out of the sellers chest. You lay his body down and quickly survey your surroundings. You see a goblin archer snarling with excitement. A wounded soldier is trying to fend him off, equip your dagger so you can go help.",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -155,7 +155,7 @@ td_room_01_010 = {
 			
 td_room_01_011 = {
                "name":"Church Door", #
-               "description":"Walking to the church you see the main door. It has sword slashes and claw marks all over it. Clearly some Goblins have tried to enter the church this way but failed. You notice an intricate lock just below the handle, if only you had a key to unlock it. You remember that the village elder keeps it safe. A fierce looking sword is on the floor. You think to yourself that this might make more sense to use for the battle that lays beyond these doors",
+               "description":"Walking to the church you see the main door. It has sword slashes and claw marks all over it. Clearly some Goblins have tried to enter the church this way but failed. You notice an intricate lock just below the handle, if only you had a key to unlock it. You remember that the village elder keeps it safe. A fierce looking sword is on the floor. You think to yourself that this might make more sense to equip the sword for the battle that lays beyond these doors.",
                "items":[],
                "item_auto_list":[TB_Tutorial_sword_001],
                "item_auto_take_list":[],
@@ -904,7 +904,7 @@ rb_room_01_032 = {
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"weast":"rb_room 01"},
+               "exits":{"west":"rb_room 01"},
                "exit_req_inv":{},
                "exit_req_equ":{},
                "exit_req_stat":{},
@@ -1108,7 +1108,7 @@ pc_room_01_007 = {"name":"Den",				# Cleared den
                }
 
 pc_room_01_008 = {"name":"Bottle Neck",
-               "description":"A very small passage, recently blocked by bolders.",
+               "description":"A very small passage, recently blocked by boulders.",
                "item_list":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -1116,7 +1116,7 @@ pc_room_01_008 = {"name":"Bottle Neck",
                "exit_req_inv":{"explode":["Dynamite"]},
                "exit_req_equ":[],
                "exit_req_stat":{"push":["str,7"]},
-               "exit_action_desc":{"back":"to the cavern.","explode":"the bolders, to free the passage.","push":"the rocks out the way."},
+               "exit_action_desc":{"back":"to the cavern.","explode":"the boulders, to free the passage.","push":"the boulders out the way."},
                "vendor":{},
                "monster_list":[],
                "enter_encounter_desc":"",

@@ -61,7 +61,7 @@ TB_Tutorial_dagger_001 = {
 "mass":1,                                                                       
 "animations":{"light attack":["Like lighting you bring the blade to your foe,"],"heavy attack":["You gear up and then charge with the small blade,"],"parry":["You bring the blade close to your body, ready to fend off their attack,"],"dodge":["You pounce back,"]},  
 "sell_value":0,                                                                 
-"buy_value":5,                                                                  
+"buy_value":10,                                                                  
 "hidden":False,                                                                 
 "heal_value":0,                                                                 
 "item_type":"weapon",                                                                  
