@@ -16,5 +16,6 @@ player = {
 "exp":0,                                                                                        
 "inventory":[],                                                                                  # A list of item dictionaries representing the player's inventory  
 "max_carry":0,
-"gold":5
+"gold":5,
+"animations":{"light attack":[""],"heavy attack":[""],"parry":[""],"dodge":[""]}                        #the default animations for when the play does not have a weapon equipped
 }

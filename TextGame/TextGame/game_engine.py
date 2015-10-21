@@ -528,8 +528,10 @@ def process_combat_actions(player_action,monster_action,monster,skip):
     global player
     print("")
     if player_action != "skipped":
-        player_animations = player["weapon"]["animations"][player_action]
-    
+        if [player_action] in player["weapon"]["animations"]:
+            player_animations = player["weapon"]["animations"][player_action]
+        else:
+            player_animations = player["animations"][player_action]
     if monster_action != "skipped":
         monster_animations = monster["weapon"]["animations"][monster_action]
 
@@ -725,6 +727,7 @@ def print_inventory_items(items):
 def print_inventory_list(items):
     global player
     items_array = []
+    inventory = []
     equippable = []
     useable = []
     other = []
@@ -734,17 +737,17 @@ def print_inventory_list(items):
     print('You have ' + str(player["gold"]) + ' gold.')
     print()
 
-
-
-
     for item in items:
         if item["hidden"] == False:
-            if item["item_type"] == "weapon" or item["item_type"] == "armour":
-                equippable.append(items.index(item))
-            elif item["item_type"] == "healing":
-                useable.append(items.index(item))
-            else:
-                other.append(items.index(item))
+            inventory.append(item)
+
+    for item in inventory:
+        if item["item_type"] == "weapon" or item["item_type"] == "armour":
+            equippable.append(items.index(item))
+        elif item["item_type"] == "healing":
+            useable.append(items.index(item))
+        else:
+            other.append(items.index(item))
 
     i = 0
 
@@ -980,6 +983,7 @@ def execute_teleport():
           else:
               print("")
               print("no stage with that key found, you will stay in current stage")
+              stage_key = ""
       else:
           print("")
           print("Staying in current stage")
@@ -1475,7 +1479,11 @@ def execute_buy(vendor, repurchase):
             buy_menu(vendor, 1)
         user_input = trade_input()
         if len(user_input) == 2:
-            if user_input[1].isdigit() and int(user_input[1]) <= len(vendor['stock_items']):
+            if repurchase == 0:
+                items = vendor['stock_items']
+            else:
+                items = vendor['acquired_items']
+            if user_input[1].isdigit() and int(user_input[1]) <= len(items):
                 if user_input[0] == 'buy' or user_input[0] == 'inspect':
                     execute_command(user_input[0] + ' ' + str(user_input[1]) + ' ' + str(repurchase))
                 else:
@@ -1517,7 +1525,6 @@ def sell_menu(vendor, items_index_array):
         print('You have no items to sell.')
 
 def execute_sell_item(items, input):
-    #input = int(input) - 1
     input = int(input)
     item = player['inventory'][items[input]]
     if len(items) > input:
@@ -1543,14 +1550,16 @@ def execute_sell(vendor):
             for item in player['inventory']:
                 if not item["hidden"]:
                     items_index_array.append(i)
-                i += 1   
+                i += 1
 
         sell_menu(vendor, items_index_array)
         user_input = trade_input()
         if len(user_input) == 2:
-            if user_input[1].isdigit() and int(user_input[1]) < len(items_index_array):
-                if user_input[0] == 'sell' or user_input[0] == 'look':
+            if user_input[1].isdigit() and int(user_input[1]) <= len(items_index_array):
+                if user_input[0] == 'sell':
                     execute_command(user_input[0] + ' ' + str(items_index_array[int(user_input[1])-1]))
+                elif user_input[0] == 'look':
+                    execute_command(user_input[0] + ' ' + user_input[1])
                 else:
                     print('This makes no sense.')
             else:
@@ -1562,6 +1571,8 @@ def execute_sell(vendor):
                 print('This makes no sense.')                
         else:
             print('This makes no sense.')
+
+
 
 def menu(exits, room_items, inv_items):
     """This function, given a dictionary of possible exits from a room, and a list
