@@ -337,6 +337,8 @@ def calculate_monster_combat_mod(monster):
     weapon_value = 0
 
     combat_stat_key = monster["combat_stat"]
+    if combat_stat_key != "STR" and combat_stat_key != "DEX" and combat_stat_key != "INT":
+        combat_stat_key = "STR"
 
     base_value = monster["stat_dict"][combat_stat_key]
 
