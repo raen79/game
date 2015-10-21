@@ -689,7 +689,7 @@ rb_room_01_020 = {
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"west":"rb_room 21", "east":"pc_room 01"},
-               "exit_req_inv":{"west":["map"]},
+               "exit_req_inv":{"west":["forest map"]},
                "exit_req_equ":{},
                "exit_req_stat":{},
                "exit_action_desc":{"west":"to find the hidden cache.", "east":"to the cave entrance."},
@@ -990,7 +990,7 @@ rb_room_01_036 = {
 
 pc_room_01_001 = {"name":"Cave Mouth",
                "description":"A small crack in the side of a cliff, leading into a cave.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"west":"rb_room 20","enter":"pc_room 02"},
@@ -1007,7 +1007,7 @@ pc_room_01_001 = {"name":"Cave Mouth",
 
 pc_room_01_002 = {"name":"Cavern",
                "description":"You find yourself in a large cavern with three dark passages leading deeper into the cave. One to your left, one on your right and one in the middle.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"leave":"pc_room 01","left":"pc_room 03","forward":"pc_room 08","right":"pc_room 04","den":"pc_room 07"},
@@ -1024,7 +1024,7 @@ pc_room_01_002 = {"name":"Cavern",
 
 pc_room_01_003 = {"name":"Stash",
                "description":"A small room filled with rusty weapons and dynamite.",
-               "item_list":[Dynamite],
+               "items":[Dynamite],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"leave":"pc_room 02"},
@@ -1041,7 +1041,7 @@ pc_room_01_003 = {"name":"Stash",
 
 pc_room_01_004 = {"name":"Den",				# Uncleared, two options to go to
                "description":"The living area for the goblins, as you walk to the middle of the room you notice a goblin turn in his bed.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"steal":"pc_room 05","leave":"pc_room 06"},
@@ -1058,7 +1058,7 @@ pc_room_01_004 = {"name":"Den",				# Uncleared, two options to go to
 
 pc_room_01_005 = {"name":"Den",				# Managed to sneak out
                "description":"You manage to sneak around and steal the gold from the sleeping goblins.",
-               "item_list":["GOLD x 20"],
+               "items":["GOLD x 20"],
                "item_auto_list":[TB_Den_key_002],
                "item_auto_take_list":["Has entered Den"],
                "exits":{"leave":"pc_room 02"},
@@ -1075,7 +1075,7 @@ pc_room_01_005 = {"name":"Den",				# Managed to sneak out
 
 pc_room_01_006 = {"name":"Den",				# Woke up golbins
                "description":"The living area for the goblins, every goblin here is dead, you see nothing else of value here.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[TB_Den_key_002],
                "item_auto_take_list":["Has entered Den"],
                "exits":{"leave":"pc_room 02"},
@@ -1092,7 +1092,7 @@ pc_room_01_006 = {"name":"Den",				# Woke up golbins
 
 pc_room_01_007 = {"name":"Den",				# Cleared den
                "description":"The living area for the goblins, you see nothing else of value here.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"leave":"pc_room 02"},
@@ -1109,7 +1109,7 @@ pc_room_01_007 = {"name":"Den",				# Cleared den
 
 pc_room_01_008 = {"name":"Bottle Neck",
                "description":"A very small passage, recently blocked by boulders.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"back":"pc_room 02","explode":"pc_room 09","push":"pc_room 09"},
@@ -1126,7 +1126,7 @@ pc_room_01_008 = {"name":"Bottle Neck",
 
 pc_room_01_009 = {"name":"Chamber",
                "description":"A large cave, the orcs lay dead around you.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"leave":"pc_room 10"},
@@ -1143,7 +1143,7 @@ pc_room_01_009 = {"name":"Chamber",
 
 pc_room_01_010 = {"name":"Cave Mouth",
                "description":"A small crack in the side of a cliff, leading into a cave.",
-               "item_list":[],
+               "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"west":"rb_room 22"},
