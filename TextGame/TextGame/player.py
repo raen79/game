@@ -1,20 +1,18 @@
 #forcechange
-from player_character import *
 
 
-
-def calculate_exp_gain(monster_lvl):
+def calculate_exp_gain(player,monster_lvl):
     exp_mod =(0.4 ** player["level"]) + ((monster_lvl - player["level"]) * 0.005)
     return round(calculate_next_level_req() * exp_mod)
 
 #handles the gain in exp, and the level up process
-def player_gain_exp(exp):
+def player_gain_exp(player,exp):
     if exp > 0:
         player["exp"] += exp
         if player["exp"] >= calculate_next_level_req():
             player["level"] += 1
             render_level_up_menu()
-            calculate_working_stats()
+            calculate_working_stats(player)
             player["current_health"] = player["max_health"]
 
 def calculate_next_level_req():
@@ -66,7 +64,7 @@ def render_level_up_menu():
                 print("Invalid Input")
     print("_________________________")
 
-def heal_player(heal_amount):
+def heal_player(player,heal_amount):
     if heal_amount > 0:
         missing_health = player["max_health"] - player["current_health"]
         if missing_health >= heal_amount:
@@ -74,7 +72,7 @@ def heal_player(heal_amount):
         else:
              player["current_health"] += missing_health
 
-def damage_player(dmg_amount):
+def damage_player(player,dmg_amount):
     if dmg_amount > 0:
         
         if player["current_health"]  >= dmg_amount:
@@ -82,7 +80,7 @@ def damage_player(dmg_amount):
         else:
              player["current_health"] = 0
           
-def equip_item(item):
+def equip_item(player,item):
     """
     This function is used to equip the player with the item (dictionary) passed to it.
     
@@ -91,7 +89,7 @@ def equip_item(item):
     1 - The item was equipped
     2 - The player does not meet the requirements to equip the item. 
     """
-    global player
+    
 
     if item in player["inventory"]:
         if item["item_type"] == "weapon":
@@ -105,7 +103,7 @@ def equip_item(item):
             player["inventory"].remove(item)
             
             #recalculate stats
-            calculate_working_stats()
+            calculate_working_stats(player)
 
             return 1
         if item["item_type"] == "armour":
@@ -116,27 +114,27 @@ def equip_item(item):
 
                 player["armour"] = item
                 player["inventory"].remove(item)
-                calculate_working_stats()
+                calculate_working_stats(player)
                 return 1
             else:
                 return 2
     
     return 0
 
-def calculate_working_stats():
-    player["max_health"] = calculate_max_health()
-    player["current_combat_mod"] = calculate_combat_mod()
-    player["max_carry"] = calculate_max_carry()
+def calculate_working_stats(player):
+    player["max_health"] = calculate_max_health(player)
+    player["current_combat_mod"] = calculate_combat_mod(player)
+    player["max_carry"] = calculate_max_carry(player)
 
-def calculate_max_health():
+def calculate_max_health(player):
     health_per_con = 5
     return health_per_con * player["stat_dict"]["CON"] + player["base_health"]
 
-def calculate_combat_mod():
+def calculate_combat_mod(player):
     combat_stat = 0
     weapon_value = 0
 
-    combat_stat_key = get_player_combat_stat()
+    combat_stat_key = get_player_combat_stat(player)
 
     base_value = player["stat_dict"][combat_stat_key]
 
@@ -147,13 +145,12 @@ def calculate_combat_mod():
     combat_stat = base_value + weapon_value
     return combat_stat
 
-def calculate_max_carry():
+def calculate_max_carry(player):
     kg_per_str = 5
     return kg_per_str * player["stat_dict"]["STR"]
 
-def get_inventory_mass():
-    global player
-    
+def get_inventory_mass(player):
+  
     TotalMass = 0.0
     for item in player["inventory"]:
         TotalMass += item["mass"]
@@ -166,19 +163,19 @@ def get_inventory_mass():
 
     return TotalMass
 
-def get_player_combat_stat():
-    if check_player_has_item("fighter path"):
+def get_player_combat_stat(player):
+    if check_player_has_item(player,"fighter path"):
         return "STR"
-    if check_player_has_item("rogue path"):
+    if check_player_has_item(player,"rogue path"):
         return "DEX"
-    if check_player_has_item("mage path"):
+    if check_player_has_item(player,"mage path"):
         return "INT"
 
     #no class chosen
     return "STR"
 
-def check_player_has_item(item_name):
-    global player
+def check_player_has_item(player,item_name):
+    
     for item in player["inventory"]:
         if item["name"].lower() == item_name.lower():
             return True
@@ -191,8 +188,8 @@ def check_player_has_item(item_name):
             return True
     return False
 
-def check_player_equipped_item(item_name):
-    global player
+def check_player_equipped_item(player,item_name):
+   
     if len(player["weapon"]) > 0:
         if player["weapon"]["name"].lower() == item_name.lower():
             return True
@@ -202,8 +199,8 @@ def check_player_equipped_item(item_name):
             return True
     return False
 
-def check_player_has_stat(stat_string,value):
-    global player
+def check_player_has_stat(player,stat_string,value):
+    
     if player["stat_dict"][stat_sting] >= value:    
         return True
     else:

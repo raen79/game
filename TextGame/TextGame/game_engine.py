@@ -3,13 +3,236 @@
 from random import randint
 from getpass import getpass
 
-from game import *
 from player import *
 from command_parser import *
+from os import getcwd
+from os import chdir
+from os import listdir
+from os import path
+from importlib import import_module
+
+game = {}
+#Main Menu Functions________
+
+def main_menu(in_progress = False):
+    print("""    ___                                                                   _ 
+   /   \ _   _  _ __    __ _   ___   ___   _ __   ___    __ _  _ __    __| |
+  / /\ /| | | || '_ \  / _` | / _ \ / _ \ | '_ \ / __|  / _` || '_ \  / _` |
+ / /_// | |_| || | | || (_| ||  __/| (_) || | | |\__ \ | (_| || | | || (_| |
+/___,'   \__,_||_| |_| \__, | \___| \___/ |_| |_||___/  \__,_||_| |_| \__,_|
+                       |___/                                                
+        ___  _        _    _                             _                  
+       /   \(_)  ___ | |_ (_)  ___   _ __    __ _  _ __ (_)  ___  ___       
+      / /\ /| | / __|| __|| | / _ \ | '_ \  / _` || '__|| | / _ \/ __|      
+     / /_// | || (__ | |_ | || (_) || | | || (_| || |   | ||  __/\__ \      
+    /___,'  |_| \___| \__||_| \___/ |_| |_| \__,_||_|   |_| \___||___/      
+                                                                      
+    ________________________________________________________________________
+    
+    A Text Based RPG Sandbox - 'The sword of Azeroth' and other stories""")
+
+
+    print("")
+    if len(game)>0:
+        print("Current Game:" + game["name"])
+        print("")
+        print("About this game:")
+        print("")
+        print(game["description"])
+        
+
+    else:
+        print("Current Game: -- none loaded -- ")
+        print("")
+        print("About this game:")
+        print("")
+        print("")
+
+    print("Choose an option:")
+    
+    options_list = []
+
+    if len(game)>0:
+        if in_progress:
+            options_list.append("Resume Game")
+            options_list.append("Restart Game")
+        else:
+            options_list.append("Play Game")
+    options_list.append("Load Game")
+    options_list.append("About")
+
+    menu_item_count = 1
+
+    for item in options_list:
+        print(str(menu_item_count) + " - " + item)
+        menu_item_count +=1
+
+    print("")
+
+    need_input = True
+
+    while need_input:
+        menu_input = input(">")
+        try:
+            input_int = int(menu_input)
+            menu_input = options_list[input_int -1]
+        except:
+            pass
+
+        menu_command = menu_input.split(" ")[0].lower()
+        if menu_command == "resume":
+            need_input = False
+            menu_resume()
+        elif menu_command == "restart":
+            need_input = False
+            menu_restart()
+        elif menu_command == "play":
+            need_input = False
+            menu_play()
+        elif menu_command == "load":
+            need_input = False
+            menu_load()
+        elif menu_command == "about":
+            need_input = False
+            menu_about()
+        else:
+            print("")
+            print("Input not recognised")
+        
+
+def menu_resume():
+    main()
+
+
+def menu_restart():
+    clear_game_data()
+    gamedir = "Dungeons_and_Dictionaries"
+    import_game_data(gamedir)
+
+def menu_play():
+    main()
+
+ 
+def menu_load():
+    clear_game_data()
+    #gamedir = "Dungeons_and_Dictionaries"
+    gamedir = get_game_dir()
+    import_game_data(gamedir)
+    main_menu(False)
+
+def get_game_dir():
+    need_input = True
+
+    
+
+    while need_input:
+        print("_________________________")
+        print("")
+        game_list = print_games()
+        print("")
+        print("Enter the number of the game you would like to load")
+        menu_input = input(">")
+        try:
+            input_int = int(menu_input)
+            
+            if len(game_list) >= input_int:
+                return game_list[input_int -1]
+            else:
+                print("")
+                print("Not a valid game number")
+        except:
+            print("")
+            print("Not a valid game number")
+
+def print_games():
+   current_dir = getcwd()
+   import_dir = current_dir + "\\Games"
+  
+   game_dirs =[]
+   for filename in listdir(import_dir):
+       if path.isdir(import_dir +"\\"+filename) and filename != "__pycache__":
+           game_dirs.append(filename)
+  
+   print("")
+   print("Available Games:")
+   print("")
+   game_count = 1
+   for filename in game_dirs:
+        print(str(game_count) +" - " + filename)
+        game_count +=1
+   
+   return game_dirs
+   
+            
+
+ 
+def menu_about():
+    pass
+
+
+
+def import_game_data(folder_name):
+   current_dir = getcwd()
+   import_dir = current_dir + "\\Games\\" + folder_name
+   chdir(import_dir)
+   #for filename in listdir(getcwd()):
+   #    print(filename)
+   #input("")
+
+
+   #test =import_module("game")
+
+   #test = __import__('game',globals(),locals())
+   test = __import__('Games.Dungeons_and_Dictionaries.game',globals(),locals())
+   test = test.__dict__[folder_name].__dict__["game"]
+
+   for k in dir(test):
+       globals()[k] = test.__dict__[k]
+
+def import_local_game():
+   test = __import__('game',globals(),locals())
+
+   for k in dir(test):
+       globals()[k] = test.__dict__[k]
+
+
+def clear_game_data():
+    dict_list = []
+    #other_list = []
+
+    dict_ignore_list=["__builtins__"]
+
+    for item in globals():
+       #print(item + " " + str(type(globals()[item])))
+       if type(globals()[item]) is dict:
+           if not(str(item) in dict_ignore_list):
+                dict_list.append(str(item))
+                
+    #   else:
+    #       if not(callable(globals()[item])):
+    #        other_list.append(str(item))
+
+
+    #print("_____")
+    #print("Dictionaries:")
+    #dict_list.sort()
+    for item in dict_list:
+        #print(item)
+        del globals()[item]
+    
+    #print("_____")
+    #print("Other:")
+    #other_list.sort()
+    #for item in other_list:
+    #  print(item)
+
+
+
 
 #General Game Functions______
 
 god_mode = False
+
 
 
 def move_stage_check():
@@ -30,7 +253,7 @@ def player_death():
     
 def check_for_victory():
 
-    return check_player_has_item("end game token")
+    return check_player_has_item(player,"end game token")
         
 def initialise_game():
     global current_stage
@@ -39,7 +262,7 @@ def initialise_game():
     
     current_stage = game["stages"][game["start_stage"]]
     current_room = current_stage[game["start_room"]]
-    calculate_working_stats()
+    calculate_working_stats(player)
     player["current_health"] = player["max_health"]
 
 def enter_room_check():
@@ -107,9 +330,9 @@ def calculate_encounter_exp(defeated_monsters):
 
         total_exp_gain = 0
         for monster in defeated_monsters:
-            total_exp_gain += calculate_exp_gain(monster["level"])
+            total_exp_gain += calculate_exp_gain(player,monster["level"])
         print("You gained "+ str(total_exp_gain) +" exp from the encounter!")
-        player_gain_exp(total_exp_gain)
+        player_gain_exp(player,total_exp_gain)
 
 def generate_loot(defeated_monsters):
     global current_room
@@ -252,8 +475,8 @@ def monster_attack_player(atk_type,monster):
 
     if len(player["armour"]) > 0:
         damage -= player["armour"]["armour value"]
-
-    player["current_health"] -= damage
+    
+    damage_player(player,damage)
 
     print("Your foe hits you for " +str(damage)+" damage!")
 
@@ -654,17 +877,17 @@ def is_valid_exit(chosen_exit,room):
     if chosen_exit.lower() in room["exits"]:
         if chosen_exit.lower() in room["exit_req_inv"]:
             for itemname in room["exit_req_inv"][chosen_exit.lower()]:
-                if not(check_player_has_item(itemname)):
+                if not(check_player_has_item(player,itemname)):
                      return False
         if chosen_exit.lower() in room["exit_req_equ"]:
             for itemname in room["exit_req_equ"][chosen_exit.lower()]:
-                if not(check_player_equipped_item(itemname)):
+                if not(check_player_equipped_item(player,itemname)):
                     return False
         
         if chosen_exit.lower() in room["exit_req_stat"]:
             for statstring in room["exit_req_equ"][chosen_exit.lower()]:
                 statreq = statstring.split(',')
-                if not(check_player_has_stat(statreq[0],statreq[1])):
+                if not(check_player_has_stat(player,statreq[0],statreq[1])):
                     return False
         
         return True
@@ -796,7 +1019,7 @@ def execute_take(item_index):
             index = (int(item_index) -1)
 
             item = visible_items[index]
-            if (get_inventory_mass() + item["mass"]) <= player["max_carry"]:
+            if (get_inventory_mass(player) + item["mass"]) <= player["max_carry"]:
                 current_room["items"].remove(item)
                 player["inventory"].append(item)
             else:
@@ -846,7 +1069,7 @@ def execute_equip(item_index):
         try:
             index = int(item_index)-1
             item = visible_items[index]
-            equip_item_result = equip_item(item)
+            equip_item_result = equip_item(player,item)
             if equip_item_result == 0:
                 print("You can't equip that item")
             if equip_item_result == 2:
@@ -920,7 +1143,7 @@ def execute_use(item_index):
             index = int(item_index) - 1
             item = visible_items[index]
             if item['item_type'] == 'healing':
-                heal_player(item['heal_value'])
+                heal_player(player,item['heal_value'])
                 print(item['use_description'])
             else:
                 print('You cannot use this item.')
@@ -1393,5 +1616,6 @@ def main():
 # '__main__' is the name of the scope in which top-level code executes.
 # See https://docs.python.org/3.4/library/__main__.html for explanation
 if __name__ == "__main__":
-    main()
-
+    
+    main_menu(False)
+    

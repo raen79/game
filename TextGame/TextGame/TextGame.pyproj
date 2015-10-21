@@ -28,22 +28,10 @@
   <ItemGroup>
     <Compile Include="command_parser.py" />
     <Compile Include="Dictionary Templates.py" />
-    <Compile Include="game.py" />
     <Compile Include="game_engine.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="items.py" />
-    <Compile Include="map.py" />
-    <Compile Include="monsters.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="player.py" />
-    <Compile Include="player_character.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="vendors.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
   <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />

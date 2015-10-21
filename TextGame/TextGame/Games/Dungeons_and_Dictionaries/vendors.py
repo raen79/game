@@ -1,4 +1,4 @@
-from items import *
+from .items import *
 
 
 TB_village_merchant_001 ={

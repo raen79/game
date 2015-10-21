@@ -1,5 +1,5 @@
 # Monsters _______________________________________
-from items import *
+from .items import *
 
 goblin_warrior_001 = {
 "name":"Goblin Warrior",                                                                                      # Name displayed in combat 
