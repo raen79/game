@@ -60,6 +60,7 @@ def main_menu(in_progress = False):
             options_list.append("Play Game")
     options_list.append("Load Game")
     options_list.append("About")
+    options_list.append("Exit")
 
     menu_item_count = 1
 
@@ -82,26 +83,30 @@ def main_menu(in_progress = False):
         menu_command = menu_input.split(" ")[0].lower()
         if menu_command == "resume":
             need_input = False
-            menu_resume()
+            return menu_resume()
         elif menu_command == "restart":
             need_input = False
-            menu_restart()
+            return menu_restart()
         elif menu_command == "play":
             need_input = False
-            menu_play()
+            return menu_play()
         elif menu_command == "load":
             need_input = False
-            menu_load()
+            return menu_load()
         elif menu_command == "about":
             need_input = False
-            menu_about()
+            return menu_about()
+        elif menu_command == "exit":
+            need_input = False
+            return menu_exit()
+            
         else:
             print("")
             print("Input not recognised")
         
 
 def menu_resume():
-    main()
+    return "game"
 
 
 def menu_restart():
@@ -110,7 +115,7 @@ def menu_restart():
     import_game_data(gamedir)
 
 def menu_play():
-    main()
+    return "game"
 
  
 def menu_load():
@@ -118,7 +123,6 @@ def menu_load():
     #gamedir = "Dungeons_and_Dictionaries"
     gamedir = get_game_dir()
     import_game_data(gamedir)
-    main_menu(False)
 
 def get_game_dir():
     need_input = True
@@ -167,8 +171,26 @@ def print_games():
 
  
 def menu_about():
-    pass
+    print("________________________")
+    print("")
+    print("ABOUT")
+    print("")
+    print("Dungeons and Dictionaries content system developed by:")
+    print('Tim Bird')
+    print('Rhys BeckettMobile')
+    print('Ajay Boby')
+    print('Pete Clark')
+    print('Thomas Darwin')
+    print('Daniel Harborne')
+    print('Eran Peer')
+    print("")
+    print("Hit enter to return to menu")
+    input("")
 
+def menu_exit():
+    print("")
+    print("Thanks for playing!")
+    return "exit"
 
 
 def import_game_data(folder_name):
@@ -188,6 +210,8 @@ def import_game_data(folder_name):
 
    for k in dir(test):
        globals()[k] = test.__dict__[k]
+
+   chdir(current_dir)
 
 def import_local_game():
    test = __import__('game',globals(),locals())
@@ -1573,8 +1597,23 @@ def move(exits, direction):
     # Next room to go to
     return current_stage[exits[direction]]
 
-
 def main():
+    no_quit = True
+    game = False
+    menu_check = ""
+    while no_quit:
+        menu_check = main_menu(game)
+        if menu_check == "exit":
+            no_quit = False
+        elif menu_check == "game":
+            game = True
+        
+        if game == True:
+            game_loop()
+
+
+    
+def game_loop():
 
     initialise_game()
     
@@ -1616,6 +1655,5 @@ def main():
 # '__main__' is the name of the scope in which top-level code executes.
 # See https://docs.python.org/3.4/library/__main__.html for explanation
 if __name__ == "__main__":
-    
-    main_menu(False)
+    main()
     
