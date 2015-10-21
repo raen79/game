@@ -477,7 +477,7 @@ def player_attack_monster(atk_type,monster):
     damage = player["current_combat_mod"] + weapon_damage
 
     if atk_type == "heavy":
-        damage *= 2
+        damage *= 1.5
 
     if len(monster["armour"]) > 0:
         damage -= monster["armour"]["armour value"]
@@ -497,7 +497,7 @@ def monster_attack_player(atk_type,monster):
 
 
     if atk_type == "heavy":
-        damage *= 2
+        damage *= 1.5
 
     if len(player["armour"]) > 0:
         damage -= player["armour"]["armour value"]
@@ -528,7 +528,7 @@ def process_combat_actions(player_action,monster_action,monster,skip):
     global player
     print("")
     if player_action != "skipped":
-        if [player_action] in player["weapon"]["animations"]:
+        if player_action in player["weapon"]["animations"]:
             player_animations = player["weapon"]["animations"][player_action]
         else:
             player_animations = player["animations"][player_action]
