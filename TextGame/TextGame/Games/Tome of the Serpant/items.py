@@ -102,7 +102,7 @@ TB_Church_key_001 = {
 "use_description":"The Key fits in the lock and unlocks the door."  }   
 
 Warrior_class = {
-"name":"Warrior Path",                                                          
+"name":"warrior Path",                                                          
 "description":"",                                                                
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},                                  
 "min_dmg":0,                                                                    
@@ -118,8 +118,8 @@ Warrior_class = {
 "item_type":"",                                                                 
 "use_description":""}
 
-Rouge_class = {
-"name":"Rouge path",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
+Rogue_class = {
+"name":"rogue path",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
 "description":"",                                                               # Description displayed when examining the item using the "LOOK" action 
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},                                 # Dictionary containing the stat modifiers equiping the item provides (Weapons and armour) 
 "min_dmg":0,                                                                    # The minimum damage generated within combat when item is equiped as weapon (Weapon)
@@ -136,7 +136,7 @@ Rouge_class = {
 "use_description":""}
 
 Mage_class = {
-"name":"Mage path",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
+"name":"mage path",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
 "description":"",                                                               # Description displayed when examining the item using the "LOOK" action 
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},                                 # Dictionary containing the stat modifiers equiping the item provides (Weapons and armour) 
 "min_dmg":0,                                                                    # The minimum damage generated within combat when item is equiped as weapon (Weapon)
@@ -272,7 +272,7 @@ TB_apprentice_robes_001 = {
 "use_description":""    }         
 
 TB_Den_key_001 = {
-"name":"Have not entered Den",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
+"name":"Has not entered Den",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
 "description":"",                                                               # Description displayed when examining the item using the "LOOK" action 
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},                                 # Dictionary containing the stat modifiers equiping the item provides (Weapons and armour) 
 "min_dmg":0,                                                                    # The minimum damage generated within combat when item is equiped as weapon (Weapon)
@@ -289,7 +289,7 @@ TB_Den_key_001 = {
 "use_description":""    } 
 
 TB_Den_key_002 = {
-"name":"Have entered Den",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
+"name":"Has entered Den",                                                                      # Name of the item diplayed in the menu and also the name checked for exit requirements.
 "description":"",                                                               # Description displayed when examining the item using the "LOOK" action 
 "stat_dict":{"STR":0,"DEX":0,"INT":0,"CON":0,},                                 # Dictionary containing the stat modifiers equiping the item provides (Weapons and armour) 
 "min_dmg":0,                                                                    # The minimum damage generated within combat when item is equiped as weapon (Weapon)

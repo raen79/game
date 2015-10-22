@@ -1,19 +1,19 @@
 #forcechange
-from items import *
-from monsters import *
-from vendors import *
+from .items import *
+from .monsters import *
+from .vendors import *
 
 #Stage 1 rooms
 dh_room_01_001 = {
                "name":"Your House",
                "description":"Waking in your room, you wipe the sleep from your eyes and can hear a commotion from outside. Screams, snarls and crashes. Perhaps someone needs a snickers? /n Regardless, you should probably get yourself tooled up before finding out what's going on.",
                "items":[dh_sword_001,dh_leather_armour_001],
-               "item_auto_list":[class_fighter],
+               "item_auto_list":[class_fighter,test_key_h,dh_sword_001,dh_healing_001,test_key,dh_sword_002,dh_leather_armour_001],
                "item_auto_take_list":[],
                "exits":{"head outside":"Room 2","test exit":"Room 2"},
                "exit_req_inv":{"test exit":["Demo Sword","Leather Armour"]},
                "exit_req_equ":{"head outside":["Demo Sword","Leather Armour"]},
-               "exit_req_stat":{},
+               "exit_req_stat":{"head outside":["STR,3"]},
                "exit_action_desc":{"head outside":"to investgate the noise.","test exit":"to check the exit nventory checker."},
                "vendor":[dh_vendor_001],
                "monster_list":[],
