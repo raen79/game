@@ -23,7 +23,8 @@ stage1 = {"first room":td_room_01_001,
           "td_room 17":td_room_01_017,
           "td_room 18":td_room_01_018,
           "td_room 19":td_room_01_019,
-          "td_room 20":td_room_01_020
+          "td_room 20":td_room_01_020,
+          "tb_room 01":tb_room_01_001
           }
 
 stage2 = {"first room":rb_room_01_001,#Link to Tutorial
@@ -75,8 +76,8 @@ stage2 = {"first room":rb_room_01_001,#Link to Tutorial
           }
 
 
-game = {"name":"Dungeons & Dictionaries.",
-        "description":"",
+game = {"name":"Tome of the Serpent",
+        "description":"An epic fantasy RPG by the team at Dungeons and Dictionaries",
         "stages":{"Stage 1":stage1,
                   "Stage 2":stage2,
                   },

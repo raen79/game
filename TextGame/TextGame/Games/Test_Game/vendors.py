@@ -1,5 +1,5 @@
 #forcechange
-from items import *
+from .items import *
 
 dh_vendor_001 ={
     "name":"Travelling Merchant",                  # Name displayed for the vendor

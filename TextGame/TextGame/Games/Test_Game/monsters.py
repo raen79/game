@@ -1,5 +1,5 @@
 #forcechange
-from items import *
+from .items import *
 
 dh_goblin_001 = {
 "name":"Frenzied Goblin",                                                                                      

@@ -6,7 +6,7 @@ from .monsters import *
 
 td_room_01_001 = {
                "name":"Home", #
-               "description":"A loud and sudden noise wakes you up. You look around your home to find the source, but quickly realise it must have come from outside. You look around the room for your clothes so you can go and investigate.",
+               "description":"*BANG!* Your eyes fly open. What was that?! The room is bathed is a flickering red glow. Is that screaming? Quickly, grab your clothes and head downstairs!",
                "items":[TB_Tutorial_Armour_001],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -22,14 +22,32 @@ td_room_01_001 = {
                "go_to_stage":""
 			}
 
-			
-td_room_01_002 = {
-               "name":"Front Door", #
-               "description":"You reach your front door but you can't leave without your clothes on. From your inventory, equip your clothes to leave.",
+tb_room_01_001={
+               "name":"Home", #
+               "description":"The red glow is getting brighter, You'd better check what is happening!",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"upstairs":"first room","open door":"td_room 03"},
+               "exits":{"downstairs":"td_room 02"},
+               "exit_req_inv":{"downstairs":["Clothes"]},
+               "exit_req_equ":{},
+               "exit_req_stat":{},
+               "exit_action_desc":{""},
+               "vendor":[],
+               "monster_list":[],
+               "enter_encounter_desc":"",
+               "leave_encounter_desc":"",            
+               "go_to_stage":""
+               }
+
+			
+td_room_01_002 = {
+               "name":"Front Door", #
+               "description":"You reach your front door. Equip your clothes so you can investigate the Village Green.",
+               "items":[],
+               "item_auto_list":[],
+               "item_auto_take_list":[],
+               "exits":{"upstairs":"tb_room 01","open door":"td_room 03"},
                "exit_req_inv":{},
                "exit_req_equ":{"open door":["Clothes"]},
                "exit_req_stat":{},
@@ -43,7 +61,7 @@ td_room_01_002 = {
 			
 td_room_01_003 = {
                "name":"Village Green", #
-               "description":"You walk into the Village Green. You see lashing flames and smoke all around. A man lays on the ground in a pool of blood. You notice some bandages on the floor.",
+               "description":"The Village is ablaze! You can barely see through all the smoke and ash. A man lays on the ground in a pool of blood. You notice some bandages on the floor. (Pick them up and help him!)",
                "items":[TB_bandages_001],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -61,7 +79,7 @@ td_room_01_003 = {
 
 td_room_01_004 = {
                "name":"Wounded Vendor", #
-               "description":"You kneel down to see if you can help and to ask what happened? 'RAIDERS!', the man screams. You offer to help as it is all too clear with all the screaming and chaos that surrounds you that the raiders are still causing havoc in the village.",
+               "description":"You kneel down to help him. He grabs you by the shirt and screams, 'RAIDERS!'. Glancing around, you can see small figures cavorting in the smoke. Clearly they are still around!",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -80,7 +98,7 @@ td_room_01_004 = {
 			
 td_room_01_005 = {
                "name":"Wounded Vendor", #
-               "description":"The wounded man gasps and groans but tells you that a band of raiding goblins set upon the village suddenly. He sees that you might want to help and tells you that he is a weapons seller and that you can trade for one of his prize daggers to help defend the village ",
+               "description":"GOBLINS! Goblins everywhere! One of the vile demonspawn got me. Here, I'll give you this dagger for the bandages you're carrying.' (Trade your Bandages for his Dagger.)",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -98,7 +116,7 @@ td_room_01_005 = {
 			
 td_room_01_006 = {
                "name":"Wounded Vendor", #
-               "description":"You take the dagger from the seller just as the sound of a shot arrow rings out. A smattering of blood is strewn across your face as you look down to see an arrow tip pertruding out of the sellers chest. You lay his body down and quickly survey your surroundings. You see a goblin archer snarling with excitement. A wounded soldier is trying to fend him off, equip your dagger so you can go help.",
+               "description":"*THWACK* Blood sprays across your face. An arrow potrudes from the Vendors chest. You see a goblin archer cackling gleefully from the tavern roof. A wounded soldier is trying to get to him, equip your dagger so you can go help.",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -269,7 +287,7 @@ td_room_01_017 = {
                "name":"Rogue Class", #
                "description":"You keep the Dagger, hoping that trainng in one particular weapon and skill set will allow you to master it",
                "items":[],
-               "item_auto_list":[Rouge_class],
+               "item_auto_list":[Rogue_class],
                "item_auto_take_list":[],
                "exits":{"south":"td_room 19"},
                "exit_req_inv":{},
@@ -689,7 +707,7 @@ rb_room_01_020 = {
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"west":"rb_room 21", "east":"pc_room 01"},
-               "exit_req_inv":{"west":["forest map"]},
+               "exit_req_inv":{"west":["Forest map"]},
                "exit_req_equ":{},
                "exit_req_stat":{},
                "exit_action_desc":{"west":"to find the hidden cache.", "east":"to the cave entrance."},
@@ -701,16 +719,16 @@ rb_room_01_020 = {
 			}
 				
 rb_room_01_021 = {
-                "name":"Hidden Cache",
+               "name":"Hidden Cache",
                "description":"You find a small chest hidden in the bole of a tree.",
-               "items":["GOLD x 25", TB_pot_005], #GOLD, Health Potion.
+               "items":[TB_pot_005], #GOLD, Health Potion.
                "item_auto_list":[],
                "item_auto_take_list":[],
                "exits":{"east":"rb_room 20"},
                "exit_req_inv":{},
                "exit_req_equ":{},
                "exit_req_stat":{},
-               "exit_action_desc":{"east":"to retrun to the Forest."},
+               "exit_action_desc":{"east":"to return to the Forest."},
                "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
@@ -1008,7 +1026,7 @@ pc_room_01_001 = {"name":"Cave Mouth",
 pc_room_01_002 = {"name":"Cavern",
                "description":"You find yourself in a large cavern with three dark passages leading deeper into the cave. One to your left, one on your right and one in the middle.",
                "items":[],
-               "item_auto_list":[],
+               "item_auto_list":[TB_Den_key_001],
                "item_auto_take_list":[],
                "exits":{"leave":"pc_room 01","left":"pc_room 03","forward":"pc_room 08","right":"pc_room 04","den":"pc_room 07"},
                "exit_req_inv":{"right":["Has not entered Den"],"den":["Has entered Den"]},
@@ -1047,7 +1065,7 @@ pc_room_01_004 = {"name":"Den",				# Uncleared, two options to go to
                "exits":{"steal":"pc_room 05","leave":"pc_room 06"},
                "exit_req_inv":[],
                "exit_req_equ":[],
-               "exit_req_stat":{"steal":"DEX,7"},
+               "exit_req_stat":{"steal":["DEX,7"]},
                "exit_action_desc":{"steal":"the gold from the sleeping goblins","leave":"to the cavern."},
                "vendor":{},
                "monster_list":[],
@@ -1058,9 +1076,9 @@ pc_room_01_004 = {"name":"Den",				# Uncleared, two options to go to
 
 pc_room_01_005 = {"name":"Den",				# Managed to sneak out
                "description":"You manage to sneak around and steal the gold from the sleeping goblins.",
-               "items":["GOLD x 20"],
+               "items":[],
                "item_auto_list":[TB_Den_key_002],
-               "item_auto_take_list":["Has entered Den"],
+               "item_auto_take_list":[TB_Den_key_001],
                "exits":{"leave":"pc_room 02"},
                "exit_req_inv":[],
                "exit_req_equ":[],
@@ -1077,7 +1095,7 @@ pc_room_01_006 = {"name":"Den",				# Woke up golbins
                "description":"The living area for the goblins, every goblin here is dead, you see nothing else of value here.",
                "items":[],
                "item_auto_list":[TB_Den_key_002],
-               "item_auto_take_list":["Has entered Den"],
+               "item_auto_take_list":[TB_Den_key_001],
                "exits":{"leave":"pc_room 02"},
                "exit_req_inv":[],
                "exit_req_equ":[],
@@ -1112,11 +1130,11 @@ pc_room_01_008 = {"name":"Bottle Neck",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
-               "exits":{"back":"pc_room 02","explode":"pc_room 09","push":"pc_room 09"},
+               "exits":{"back":"pc_room 02","explode":"pc_room 09"},
                "exit_req_inv":{"explode":["Dynamite"]},
-               "exit_req_equ":[],
-               "exit_req_stat":{"push":["str,7"]},
-               "exit_action_desc":{"back":"to the cavern.","explode":"the boulders, to free the passage.","push":"the boulders out the way."},
+               "exit_req_equ":{},
+               "exit_req_stat":{},
+               "exit_action_desc":{"back":"to the cavern.","explode":"the boulders, to free the passage."},
                "vendor":{},
                "monster_list":[],
                "enter_encounter_desc":"",
