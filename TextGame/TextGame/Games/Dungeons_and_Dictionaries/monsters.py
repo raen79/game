@@ -204,7 +204,7 @@ tutorial_goblin_fighters_001 = {
 "current_health":35,                                                                             # Current health of the monster. Set this to what you want the monster to begin on. (usualy equal to the max health value - rememeber the max health will be calculated by the engine at the begining of the counter)
 "max_health":35,                                                                                 # This will be calculated and updated based on the monsters constitution.
 "current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
-"level":1,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
+"level":4,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
 "loot":[{99:"GOLD x 2"},{70:"GOLD x 2"}]                                           # A list of dictionaries containing probability distribution for loot gained by killing the monster. The engine will look at each dictionary and roll a number between 0 and 99 for each one. Thus you can give multiple items from one monster.
                                                                                                 #Gold drops should be entered as a string in the format "GOLD x #" where # is replaced with the amount gained.  
 }
@@ -220,7 +220,7 @@ tutorial_goblin_fighters_002 = {
 "current_health":35,                                                                             # Current health of the monster. Set this to what you want the monster to begin on. (usualy equal to the max health value - rememeber the max health will be calculated by the engine at the begining of the counter)
 "max_health":35,                                                                                 # This will be calculated and updated based on the monsters constitution.
 "current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
-"level":1,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
+"level":5,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
 "loot":[{99:"GOLD x 2"},{70:"GOLD x 2"}]                                           # A list of dictionaries containing probability distribution for loot gained by killing the monster. The engine will look at each dictionary and roll a number between 0 and 99 for each one. Thus you can give multiple items from one monster.
                                                                                                 #Gold drops should be entered as a string in the format "GOLD x #" where # is replaced with the amount gained.  
 }
@@ -229,14 +229,14 @@ tutorial_goblin_rogue_001 = {
 "name":"Goblin Rogue",                                                                                      # Name displayed in combat 
 "description":"These goblins are small and light on their feet. (This description implies that these Goblins will use light attacks, try Parry!)",                                                                               # Description shown when using the "LOOK" command
 "stat_dict":{"STR":0,"DEX":1,"INT":0,"CON":6,},                                                 # the stats of the monster
-"combat_dict":{39:"light attack",49:"heavy attack",89:"parry",99:"dodge"},                      # the probability distribution for the actions of the monster. The engine will generate a number between 0 and 99 and the first number in this dictionary that the generated number is les or equal to is the action taken. remember 0-24 is 25 values i.e 25%
+"combat_dict":{69:"light attack",79:"heavy attack",89:"parry",99:"dodge"},                      # the probability distribution for the actions of the monster. The engine will generate a number between 0 and 99 and the first number in this dictionary that the generated number is les or equal to is the action taken. remember 0-24 is 25 values i.e 25%
 "combat_stat":"DEX",                                                                               # The stat used for damage calculation. e.g. "STR"
 "armour":{},                                                                                    # (An armour dictionary variable e.g. "armour":leather_001) The dictionary for the equiped armour
 "weapon":TB_Goblin_dagger_001,                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
 "current_health":30,                                                                             # Current health of the monster. Set this to what you want the monster to begin on. (usualy equal to the max health value - rememeber the max health will be calculated by the engine at the begining of the counter)
 "max_health":30,                                                                                 # This will be calculated and updated based on the monsters constitution.
 "current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
-"level":1,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
+"level":100,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
 "loot":[{99:"GOLD x 2"},{70:"GOLD x 2"}]                                           # A list of dictionaries containing probability distribution for loot gained by killing the monster. The engine will look at each dictionary and roll a number between 0 and 99 for each one. Thus you can give multiple items from one monster.
                                                                                                 #Gold drops should be entered as a string in the format "GOLD x #" where # is replaced with the amount gained.  
 }
@@ -245,14 +245,14 @@ tutorial_goblin_rogue_002 = {
 "name":"Goblin Rogue",                                                                                      # Name displayed in combat 
 "description":"This goblin is small and light on his feet. (This description implies that these Goblins will use light attacks, try Parry!)",                                                                               # Description shown when using the "LOOK" command
 "stat_dict":{"STR":0,"DEX":1,"INT":0,"CON":6,},                                                 # the stats of the monster
-"combat_dict":{39:"light attack",49:"heavy attack",89:"parry",99:"dodge"},                      # the probability distribution for the actions of the monster. The engine will generate a number between 0 and 99 and the first number in this dictionary that the generated number is les or equal to is the action taken. remember 0-24 is 25 values i.e 25%
+"combat_dict":{69:"light attack",79:"heavy attack",89:"parry",99:"dodge"},                      # the probability distribution for the actions of the monster. The engine will generate a number between 0 and 99 and the first number in this dictionary that the generated number is les or equal to is the action taken. remember 0-24 is 25 values i.e 25%
 "combat_stat":"DEX",                                                                               # The stat used for damage calculation. e.g. "STR"
 "armour":{},                                                                                    # (An armour dictionary variable e.g. "armour":leather_001) The dictionary for the equiped armour
 "weapon":TB_Goblin_dagger_001,                                                                                    # (A weapon dictionary variable e.g. "weapon":sword_001) The dictionary for the equiped weapon
 "current_health":30,                                                                             # Current health of the monster. Set this to what you want the monster to begin on. (usualy equal to the max health value - rememeber the max health will be calculated by the engine at the begining of the counter)
 "max_health":30,                                                                                 # This will be calculated and updated based on the monsters constitution.
 "current_combat_mod":0,                                                                         # Calculated by the engine at the begining of combat
-"level":1,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
+"level":100,                                                                                      # Used for generating an exp value for defeating this enemy. (try to make sure the stats make sense based on this level)
 "loot":[{99:"GOLD x 2"},{70:"GOLD x 2"}]                                           # A list of dictionaries containing probability distribution for loot gained by killing the monster. The engine will look at each dictionary and roll a number between 0 and 99 for each one. Thus you can give multiple items from one monster.
                                                                                                 #Gold drops should be entered as a string in the format "GOLD x #" where # is replaced with the amount gained.  
 }

@@ -477,7 +477,7 @@ def player_attack_monster(atk_type,monster):
     damage = player["current_combat_mod"] + weapon_damage
 
     if atk_type == "heavy":
-        damage *= 1.5
+        damage = round(damage * 1.5)
 
     if len(monster["armour"]) > 0:
         damage -= monster["armour"]["armour value"]
@@ -497,7 +497,7 @@ def monster_attack_player(atk_type,monster):
 
 
     if atk_type == "heavy":
-        damage *= 1.5
+        damage = round(damage * 1.5)
 
     if len(player["armour"]) > 0:
         damage -= player["armour"]["armour value"]
@@ -510,6 +510,7 @@ def player_parry_monster(monster):
     global player
 
     damage = 2*player["stat_dict"]["DEX"]
+
 
     monster["current_health"] -= damage
 
@@ -755,6 +756,10 @@ def print_inventory_list(items):
         print("")
         print('You can use the following commands: [EQUIP],[USE],[LOOK],[DROP] using the item numbers:')
         print("e.g. 'drop 1' to drop item 1. (Note: '(equipable)' and '(usable)' show where their respective commands are appropriate")
+        print("")
+        print("__________")
+        print("")
+        print("Items:")
         print("")
         for item_index in equippable:
             if items[item_index]['item_type'] == 'armour':
@@ -1514,7 +1519,7 @@ def sell_menu(vendor, items_index_array):
     print("")
     print('You have ' + str(player['gold']) + ' gold.')
     print()
-    print('You can use [SELL] or [LOOK] + Item Number to interact with an ite.\n [EXIT] to stop selling.')
+    print('You can use [SELL] or [LOOK] + Item Number to interact with an item.\n [EXIT] to stop selling.')
     indices = items_index_array
     if len(indices) > 0:
         print('Items you can sell:')
