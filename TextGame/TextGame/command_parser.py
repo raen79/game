@@ -20,7 +20,7 @@ def remove_punct(text):
         if not (char in string.punctuation):
             no_punct = no_punct + char
 
-    return no_punct
+    return no_punct.lower()
 
 
 def normalise_input(user_input):

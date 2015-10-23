@@ -200,8 +200,13 @@ def check_player_equipped_item(player,item_name):
     return False
 
 def check_player_has_stat(player,stat_string,value):
-    
-    if player["stat_dict"][stat_string] >= value:    
-        return True
-    else:
-        return False  
+    try:
+        value = int(value)
+
+        if player["stat_dict"][stat_string] >= value:    
+            return True
+        else:
+            return False  
+
+    except:
+        return False

@@ -12,6 +12,7 @@ from os import path
 from importlib import import_module
 
 game = {}
+gamedir = ""
 #Main Menu Functions________
 
 def main_menu(in_progress = False):
@@ -92,7 +93,8 @@ def main_menu(in_progress = False):
             return menu_play()
         elif menu_command == "load":
             need_input = False
-            return menu_load()
+            gamedir = menu_load()
+            return ""
         elif menu_command == "about":
             need_input = False
             return menu_about()
@@ -110,8 +112,13 @@ def menu_resume():
 
 
 def menu_restart():
+    global gamedir
+    print("GD = " + gamedir)
+    temp_gd = gamedir
     clear_game_data()
-    gamedir = "Dungeons_and_Dictionaries"
+
+    global gamedir
+    gamedir = temp_gd
     import_game_data(gamedir)
 
 def menu_play():
@@ -119,11 +126,13 @@ def menu_play():
 
  
 def menu_load():
+    global gamedir
     try:
         clear_game_data()
         #gamedir = "Dungeons_and_Dictionaries"
         gamedir = get_game_dir()
         import_game_data(gamedir)
+        return gamedir
     except:
         print("")
         print("________________________")
@@ -203,6 +212,8 @@ def menu_exit():
 
 def import_game_data(folder_name):
    current_dir = getcwd()
+   print("working dir: " +current_dir)
+   print("folder name: " +folder_name)
    import_dir = current_dir + "\\Games\\" + folder_name
    chdir(import_dir)
    #for filename in listdir(getcwd()):
@@ -823,6 +834,18 @@ def print_summary():
     print('------')
     print('STATS')
     print('------')
+    print("")
+    if check_player_has_item(player,"warrior Path"):
+        print("You are the warrior class.")
+        print("You use your strength in combat.") 
+    elif check_player_has_item(player,"rogue path"):
+        print("You are the rogue class.")
+        print("You use your dexterity in combat.")
+    elif check_player_has_item(player,"mage path"):
+        print("You are the mage class.")
+        print("You use your inteligence in combat.")
+    
+    print("")
     print('Strength: ' + str(player['stat_dict']['STR'] + ext_str))
     print('Dexterity: ' + str(player['stat_dict']['DEX'] + ext_dex))
     print('Intelligence: ' + str(player['stat_dict']['INT'] + ext_int))
@@ -915,7 +938,7 @@ def print_menu(exits, room_items, inv_items):
         print("")
         print('[TRADE] to buy or sell items from ' + current_room['vendor'][0]['name'] + '.')
     print("")
-    print('[SUMMARY or S] to view your characters euippeed items and statistics.')
+    print('[SUMMARY or S] to view your characters equippeed items and statistics.')
     print("[INVENTORY or I] to open your inventory.")
     print("")
     print("What do you want to do?")
@@ -948,6 +971,10 @@ def is_valid_exit(chosen_exit,room):
         return True
     else:
         return False
+
+def execute_main_menu():
+    global game_running
+    game_running = False
 
 def execute_godmode():
     global god_mode
@@ -1243,6 +1270,8 @@ def execute_command(input):
     if is_valid_exit(input,current_room):
         execute_go(input)
     
+    elif input == "dndi menu":
+        return "exit"
     elif input == "godmode":
         execute_godmode()
     
@@ -1567,7 +1596,7 @@ def execute_sell_item(items, input):
     if len(items) > input:
         if item['sell_value'] > 0:
             print("")
-            print("You sold " +item['name'] + " for " +item['sell_value'] + " gold.")
+            print("You sold " +item['name'] + " for " + str(item['sell_value']) + " gold.")
             print("")
         
             player['gold'] += item['sell_value']
@@ -1686,10 +1715,10 @@ def game_loop():
     initialise_game()
     
         
-
+    game_running = True
 
     # Main game loop
-    while True:
+    while game_running:
         
         enter_room_check()
 
@@ -1713,8 +1742,10 @@ def game_loop():
         command = menu(current_room["exits"], current_room["items"], player["inventory"])
 
         # Execute the player's command
-        execute_command(command)
+        gamecheck = execute_command(command)
         
+        if gamecheck == "exit":
+            game_running = False
        
         #place holder message to be replaced with a return to the main menu
     print("Game quit")

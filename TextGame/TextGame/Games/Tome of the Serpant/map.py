@@ -6,7 +6,7 @@ from .monsters import *
 
 td_room_01_001 = {
                "name":"Home", #
-               "description":"*BANG!* Your eyes fly open. What was that?! The room is bathed is a flickering red glow. Is that screaming? Quickly, grab your clothes and head downstairs!",
+               "description":"*BANG!* Your eyes fly open. What was that?! The room is bathed in a flickering red glow. Is that screaming? Quickly, grab your clothes and head downstairs!",
                "items":[TB_Tutorial_Armour_001],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -14,7 +14,7 @@ td_room_01_001 = {
                "exit_req_inv":{"downstairs":["Clothes"]},
                "exit_req_equ":{},
                "exit_req_stat":{},
-               "exit_action_desc":{""},
+               "exit_action_desc":{"downstairs":"to head downstairs."},
                "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
@@ -32,7 +32,7 @@ tb_room_01_001={
                "exit_req_inv":{"downstairs":["Clothes"]},
                "exit_req_equ":{},
                "exit_req_stat":{},
-               "exit_action_desc":{""},
+               "exit_action_desc":{"downstairs":"to head back downstairs."},
                "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
@@ -43,7 +43,7 @@ tb_room_01_001={
 			
 td_room_01_002 = {
                "name":"Front Door", #
-               "description":"You reach your front door. Equip your clothes so you can investigate the Village Green.",
+               "description":"You reach your front door.It would be a bad idea to head out without any clothes on!Make sure to equip your clothes from the inventory and then head outside to investigate the Village Green.",
                "items":[],
                "item_auto_list":[],
                "item_auto_take_list":[],
@@ -51,7 +51,7 @@ td_room_01_002 = {
                "exit_req_inv":{},
                "exit_req_equ":{"open door":["Clothes"]},
                "exit_req_stat":{},
-               "exit_action_desc":{""},
+               "exit_action_desc":{"open door":"to head outside"},
                "vendor":[],
                "monster_list":[],
                "enter_encounter_desc":"",
